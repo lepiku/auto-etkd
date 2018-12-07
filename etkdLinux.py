@@ -14,7 +14,7 @@ waitDelay = 0.001
 scrollS = 20 # scroll value
 scrollD = 0.24 # delay after scolling
 
-#   coodinates for every 'laporkan' button that should be 1 pixel above 
+#   coodinates for every 'laporkan' button that should be 1 pixel above
 # the border between the bottom line of the button and the background
 button1x = 1831
 button1y = [246, 394, 542, 690, 837]
@@ -39,30 +39,12 @@ j_tindak = 0
 j_rujuk = 0
 j_pasien = 0
 
-def gM_old():
-	"""Get mouse location and the color on the mouse coordinate
-	for every quarter of a second."""
-	while True:
-		try:
-			mpos = pag.position()
-			pcolor = pag.screenshot(region=(mpos[0], mpos[1], 1, 1))
-			pcolor = pcolor.getpixel((0, 0))
-			xcolor = ''.join('{:02x}'.format(i) for i in pcolor)
-			pcolor = list(map(str, pcolor))
-			print('X: {:<5}Y: {:<5}Color: {:11} #{}'.format(mpos[0],
-					mpos[1], ','.join(pcolor), xcolor))
-			tsleep(0.24)
-
-		except KeyboardInterrupt:
-			print('\nSTOPPED')
-			break
-
 def checkKinerja():
-	"""Check if the window name is 'eKinerja DKI Jakarta - Mozilla Firefox'
+	'''Check if the window name is 'eKinerja DKI Jakarta - Mozilla Firefox'
 
 	The browser should be Firefox.
 	The Firefox window should be half opened on the right side.
-	"""
+	'''
 
 	# scan 100 pixel from top
 	topRegion = pag.screenshot(region=(0, 0, 1920, 100))
@@ -80,7 +62,7 @@ def checkKinerja():
 		return False
 
 def calibrate1():
-	"""Calibrates the coordinate of button1x and button1y."""
+	'''Calibrates the coordinate of button1x and button1y.'''
 	global button1x, button1y
 
 	# preparation
@@ -107,7 +89,7 @@ def calibrate1():
 	pag.scroll(20)
 
 def calibrate2():
-	"""Calibrates the coordinate for waitClockInput button."""
+	'''Calibrates the coordinate for waitClockInput button.'''
 	global blueEdgex, blueEdgey
 
 	# preparation
@@ -138,11 +120,11 @@ def calibrate2():
 	#pag.scroll(20)
 
 def mengetes():
-	"""change the value of testVar everytime it's called
+	'''change the value of testVar everytime it's called
 
 	testVar should be True if you are just testing,
 	and testVar should be False if you are actually doing it.
-	"""
+	'''
 	global testVar
 
 	testVar = not testVar
@@ -153,7 +135,7 @@ def mengetes():
 	print('testVar is {}, PAUSE is {}'.format(testVar, pag.PAUSE))
 
 def scrollPrep():
-	"""To readjust before clicking 'laporkan'."""
+	'''To readjust before clicking 'laporkan'.'''
 
 	pag.moveTo(1750, button1y[2])
 	pag.scroll(scrollS)
@@ -163,11 +145,11 @@ def scrollPrep():
 	tsleep(scrollD)
 
 def button1Check():
-	"""Check if the first 'laporkan' button is correct.
+	'''Check if the first 'laporkan' button is correct.
 
 	It will keep rechecking and prints hashtag
 	until the button is at the right spot.
-	"""
+	'''
 
 	counter = 1
 	scrollPrep()
@@ -185,7 +167,7 @@ def button1Check():
 		scrollPrep()
 
 def waitClockInput( button):
-	"""Wait until we can click on 'Jam Mulai'."""
+	'''Wait until we can click on 'Jam Mulai'.'''
 
 	while pag.screenshot(region=(button1x, button1y[button], 1, 1)).getpixel(
 			(0, 0))[0] in (26, 28):
@@ -201,35 +183,35 @@ def waitClockInput( button):
 	pag.click(x=blueEdgex, y=blueEdgey, clicks=3, interval=0)
 
 def autoChangeNum():
-	"""Automatically press down until it doesn't move anymore."""
+	'''Automatically press down until it doesn't move anymore.'''
 	for i in range(5):
 		pag.press('down')
 	pag.press('tab')
 
 def waitSubmit():
-	"""Wait after you clicked 'Simpan' or 'Batal'."""
+	'''Wait after you clicked 'Simpan' or 'Batal'.'''
 	while pag.screenshot(region=(1375, 1000, 1, 1)).getpixel((0, 0))[0] in \
 			(26, 28):
 		tsleep(0.03125)
 
 def submit():
-	"""Clicks 'Simpan' if testVar is false
+	'''Clicks 'Simpan' if testVar is false
 	and clicks 'Batal' if testVar is True.
 
 	testVar should be True if you are testing,
 	and testVar should be False if you are actually doing it.
-	"""
+	'''
 	if testVar == False:
 		return '\t\n'
 	return '\t\t\n'
 
 def tindak( tindakan, tOpt):
-	"""Inputs 'Melakukan tindakan / terapi pengobatan'
+	'''Inputs 'Melakukan tindakan / terapi pengobatan'
 
 	Keyword arguments:
 	tindakan -- how many activities did you do (integer)
 	tOpt     -- the list of times you do different activities (hh:mm)
-	"""
+	'''
 	ketindakan = 'Anamnesa, pemeriksaan fisik, diagnosa, terapi : penambalan, pencabutan, curetage, pemberian resep : '
 	kali = len(tOpt) - 1
 
@@ -257,13 +239,13 @@ def tindak( tindakan, tOpt):
 	print('Finished Tindakan')
 
 def rujuk(rujukan, tOpt):
-	"""Inputs 'Melakukan rujukan'
+	'''Inputs 'Melakukan rujukan'
 
 	Keyword arguments:
 	rujukan --	how many 'rujukan' did you do. (integer)
 				usually half of 'tindakan'
 	tOpt    --	the list of times you do different activities (hh:mm)
-	"""
+	'''
 	button1Check()
 	pag.click(button1x, button1y[2])
 
@@ -278,13 +260,13 @@ def rujuk(rujukan, tOpt):
 	print('Finished Rujukan')
 
 def kocam( pasien, tOpt):
-	"""Inputs 'Melaksanakan / Melayani Konsultasi Individu / Kelompok'
+	'''Inputs 'Melaksanakan / Melayani Konsultasi Individu / Kelompok'
 	and 'Membuat catatan medik gigi dan mulut pasien rawat inap / jalan'
 
 	Keyword arguments:
 	pasien -- how many patient did you work on (integer)
 	tOpt   -- the list of times you do different activities (hh:mm)
-	"""
+	'''
 	buttons = [0, 4]
 	ket = ['Jumlah konsultasi individu : ', 'Jumlah catatan medik : ']
 	# [0] : Konsultasi individu
@@ -311,63 +293,63 @@ def kocam( pasien, tOpt):
 
 # Saved 'tindakan' preset
 def meTindak(tindakan):
-	"""Normal 'tindakan'."""
+	'''Normal 'tindakan'.'''
 	tOpt = ['07:30', '09:00', '10:30', '12:00']
 	tindak(tindakan, tOpt)
 def seTindak(tindakan):
-	"""Senam 'tindakan'."""
+	'''Senam 'tindakan'.'''
 	tOpt = ['08:30', '10:00', '11:00', '12:00']
 	tindak(tindakan, tOpt)
 def diTindak(tindakan):
-	"""Only a few 'tindakan'."""
+	'''Only a few 'tindakan'.'''
 	tOpt = ['07:30', '09:00', '10:30']
 	tindak(tindakan, tOpt)
 
 # Saved 'rujukan' preset
 def meRujuk(rujukan):
-	"""Normal 'rujukan'."""
+	'''Normal 'rujukan'.'''
 	tOpt = ['12:00', '12:30']
 	rujuk(rujukan, tOpt)
 def diRujuk(rujukan):
-	"""Only a few 'rujukan'."""
+	'''Only a few 'rujukan'.'''
 	tOpt = ['10:30', '11:00']
 	rujuk(rujukan, tOpt)
 
 # Saved 'konsultasi dan catatan medik' preset
 def meKocam(pasien):
-	"""Normal 'konsultasi dan catatan medik'."""
+	'''Normal 'konsultasi dan catatan medik'.'''
 	tOpt = ['12:30', '13:30', '14:00']
 	kocam(pasien, tOpt)
 def saKocam(pasien):
-	"""Saturday 'konsultasi dan catatan medik'."""
+	'''Saturday 'konsultasi dan catatan medik'.'''
 	tOpt = ['12:00', '12:30', '13:00']
 	kocam(pasien, tOpt)
 def diKocam(pasien):
-	"""Only a few 'konsultasi dan catatan medik'."""
+	'''Only a few 'konsultasi dan catatan medik'.'''
 	tOpt = ['11:00', '11:30', '12:00']
 	kocam(pasien, tOpt)
 
 # Daftar fungsi-fungsi yang bisa dijalankan
 def normal():
-	"""Untuk hari-hari biasa."""
+	'''Untuk hari-hari biasa.'''
 	global j_tindak, j_rujuk, j_pasien
 	meTindak(j_tindak)
 	meRujuk(j_rujuk)
 	meKocam(j_pasien)
 def senam():
-	"""Untuk hari rabu saat ada senam."""
+	'''Untuk hari rabu saat ada senam.'''
 	global j_tindak, j_rujuk, j_pasien
 	meTindak(j_tindak)
 	meRujuk(j_rujuk)
 	meKocam(j_pasien)
 def sabtu():
-	""" Untuk hari sabtu yang tanpa rujukan."""
+	''' Untuk hari sabtu yang tanpa rujukan.'''
 	global j_tindak, j_pasien
 	meTindak(j_tindak)
 	meKocam(j_pasien)
 def dikit():
 	global j_tindak, j_rujuk, j_pasien
-	"""Untuk hari biasa saat pasien sedikit."""
+	'''Untuk hari biasa saat pasien sedikit.'''
 	meTindak(j_tindak)
 	meRujuk(j_rujuk)
 	meKocam(j_pasien)
@@ -376,5 +358,5 @@ def main():
 	while not checkKinerja():
 		tsleep(1)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
 	main()
