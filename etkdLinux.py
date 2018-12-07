@@ -129,7 +129,7 @@ def mengetes():
 
 	testVar = not testVar
 	if testVar:
-		pag.PAUSE = 0.2
+		pag.PAUSE = 0
 	else:
 		pag.PAUSE = 0
 	print('testVar is {}, PAUSE is {}'.format(testVar, pag.PAUSE))
