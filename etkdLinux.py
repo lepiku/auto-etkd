@@ -34,13 +34,12 @@ clockOffsety = 129
 blueEdgex = 1375 # blue edge X coordinate
 blueEdgey = 683 # blue edge Y coordinate
 
+# failsafe and settings
+pag.PAUSE = 0
+pag.FAILSAFE = True
 j_tindak = 0
 j_rujuk = 0
 j_pasien = 0
-
-# failsafe settings
-pag.PAUSE = 0
-pag.FAILSAFE = True
 
 def checkKinerja():
 	'''Check if the window name is 'eKinerja DKI Jakarta - Mozilla Firefox'
