@@ -5,7 +5,7 @@
 import pyautogui as pag
 from time import sleep as tsleep
 
-# setting variables and delays
+# setting variables and delays, sometimes different for every OS
 realPause = 0
 testPause = 0
 testVar = False
@@ -51,6 +51,7 @@ def checkKinerja():
 	# scan 100 pixel from top
 	topRegion = pag.screenshot(region=(0, 0, 1920, 100))
 	windowFind = pag.locate(windowNamePath, topRegion)
+
 	if windowFind == windowLocation:
 		print('Link location is correct.')
 		return True
@@ -70,7 +71,6 @@ def calibrate1():
 	# preparation
 	scrollPrep()
 
-	# get button location
 	butLoc = pag.locateOnScreen(laporkanButtonPath)
 
 	if butLoc == None:
@@ -101,7 +101,6 @@ def calibrate2():
 			(0, 0))[0] in (26, 28):
 		tsleep(waitDelay)
 
-	# get button location
 	clockLoc = pag.locateOnScreen(clockButtonPath)
 
 	if clockLoc == None:
@@ -111,15 +110,15 @@ def calibrate2():
 	else:
 		print('OLD =', blueEdgex, blueEdgey)
 
-		blueEdgex, blueEdgey = clockLoc[0] + clockOffsetx, \
-			clockLoc[1] + clockOffsety
+		blueEdgex = clockLoc[0] + clockOffsetx
+		blueEdgey = clockLoc[1] + clockOffsety
 
 		print('NEW =', blueEdgex, blueEdgey)
 		print('Calibration Successful!')
 
 	waitClockInput(3)
 	pag.typewrite('\t\t\t\t\t\n')
-	#pag.scroll(20)
+	pag.scroll(20)
 
 def mengetes():
 	'''change the value of testVar everytime it's called
@@ -152,7 +151,6 @@ def button1Check():
 	It will keep rechecking and prints hashtag
 	until the button is at the right spot.
 	'''
-
 	counter = 1
 	scrollPrep()
 	while True:
@@ -168,9 +166,8 @@ def button1Check():
 		counter += 1
 		scrollPrep()
 
-def waitClockInput( button):
+def waitClockInput(button):
 	'''Wait until we can click on 'Jam Mulai'.'''
-
 	while pag.screenshot(region=(button1x, button1y[button], 1, 1)).getpixel(
 			(0, 0))[0] in (26, 28):
 		tsleep(waitDelay)
@@ -191,7 +188,9 @@ def autoChangeNum():
 	pag.press('tab')
 
 def waitSubmit():
-	'''Wait after you clicked 'Simpan' or 'Batal'.'''
+	'''Wait after you clicked 'Simpan' or 'Batal'.
+	Check the simpan button until it isn't blue.
+	'''
 	while pag.screenshot(region=(1375, 1000, 1, 1)).getpixel((0, 0))[0] in \
 			(26, 28):
 		tsleep(0.03125)
@@ -207,7 +206,7 @@ def submit():
 		return '\t\n'
 	return '\t\t\n'
 
-def tindak( tindakan, tOpt):
+def tindak(tindakan, tOpt):
 	'''Inputs 'Melakukan tindakan / terapi pengobatan'
 
 	Keyword arguments:
@@ -261,7 +260,7 @@ def rujuk(rujukan, tOpt):
 
 	print('Finished Rujukan')
 
-def kocam( pasien, tOpt):
+def kocam(pasien, tOpt):
 	'''Inputs 'Melaksanakan / Melayani Konsultasi Individu / Kelompok'
 	and 'Membuat catatan medik gigi dan mulut pasien rawat inap / jalan'
 
@@ -290,7 +289,6 @@ def kocam( pasien, tOpt):
 		waitSubmit()
 
 	print('Finished Konsultasi and Catatan Medik')
-
 	pag.scroll(20)
 
 # Saved 'tindakan' preset
@@ -334,31 +332,24 @@ def diKocam(pasien):
 # Daftar fungsi-fungsi yang bisa dijalankan
 def normal():
 	'''Untuk hari-hari biasa.'''
-	global j_tindak, j_rujuk, j_pasien
 	meTindak(j_tindak)
 	meRujuk(j_rujuk)
 	meKocam(j_pasien)
 def senam():
 	'''Untuk hari rabu saat ada senam.'''
-	global j_tindak, j_rujuk, j_pasien
 	meTindak(j_tindak)
 	meRujuk(j_rujuk)
 	meKocam(j_pasien)
 def sabtu():
 	''' Untuk hari sabtu yang tanpa rujukan.'''
-	global j_tindak, j_pasien
 	meTindak(j_tindak)
 	meKocam(j_pasien)
 def dikit():
-	global j_tindak, j_rujuk, j_pasien
 	'''Untuk hari biasa saat pasien sedikit.'''
 	meTindak(j_tindak)
 	meRujuk(j_rujuk)
 	meKocam(j_pasien)
 
-def main():
+if __name__ == '__main__':
 	while not checkKinerja():
 		tsleep(1)
-
-if __name__ == '__main__':
-	main()
