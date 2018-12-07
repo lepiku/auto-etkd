@@ -19,27 +19,26 @@ scrollD = 0.24 # delay after scolling
 button1x = 1831
 button1y = [246, 394, 542, 690, 837]
 
-blueEdgex = 1375 # blue edge X coordinate
-blueEdgey = 683 # blue edge Y coordinate
-
 # calibration settings
 windowNamePath = '/home/dimas/Dropbox/Python/autoKinerja/ekinerjaWindow.png'
-windowLocation = (1315, 13, 115, 5)
-
 laporkanButtonPath = '/home/dimas/Dropbox/Python/autoKinerja/' + \
 			'laporkanButtonL.png'
+clockButtonPath = '/home/dimas/Dropbox/Python/autoKinerja/clockButton.png'
+
+windowLocation = (1315, 13, 115, 5)
 lapOffsetx = -9
 lapOffsety = 10
-
-clockButtonPath = '/home/dimas/Dropbox/Python/autoKinerja/clockButton.png'
 clockOffsetx = 7
 clockOffsety = 129
+
+blueEdgex = 1375 # blue edge X coordinate
+blueEdgey = 683 # blue edge Y coordinate
 
 j_tindak = 0
 j_rujuk = 0
 j_pasien = 0
 
-# setting failsafe
+# failsafe settings
 pag.PAUSE = 0
 pag.FAILSAFE = True
 
