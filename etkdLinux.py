@@ -5,9 +5,9 @@
 import pyautogui as pag
 from time import sleep as tsleep
 
-# setting failsafe and variables, sometimes diferent for every OS
-pag.PAUSE = 0
-pag.FAILSAFE = True
+# setting variables and delays
+realPause = 0
+testPause = 0
 testVar = False
 waitDelay = 0.001
 
@@ -38,6 +38,10 @@ clockOffsety = 129
 j_tindak = 0
 j_rujuk = 0
 j_pasien = 0
+
+# setting failsafe
+pag.PAUSE = 0
+pag.FAILSAFE = True
 
 def checkKinerja():
 	'''Check if the window name is 'eKinerja DKI Jakarta - Mozilla Firefox'
@@ -129,9 +133,9 @@ def mengetes():
 
 	testVar = not testVar
 	if testVar:
-		pag.PAUSE = 0
+		pag.PAUSE = testPause
 	else:
-		pag.PAUSE = 0
+		pag.PAUSE = realPause
 	print('testVar is {}, PAUSE is {}'.format(testVar, pag.PAUSE))
 
 def scrollPrep():
