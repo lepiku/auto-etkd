@@ -8,7 +8,7 @@ class Frame(tk.Frame):
 	def __init__(self, master):
 		super().__init__(master)
 		self.master = master
-		self.fonts = [("Arial", 14)]
+		self.fonts = [('Arial', 14)]
 
 		# variables
 		self.getMouse = False
@@ -23,11 +23,11 @@ class Frame(tk.Frame):
 		self.widgets()
 
 	def widgets(self):
-		l_tindak = tk.Label(self, text="Tindakan :", anchor='e', pady=5,
+		l_tindak = tk.Label(self, text='Tindakan :', anchor='e', pady=5,
 				font=self.fonts[0])
-		l_rujuk = tk.Label(self, text="Rujukan :", anchor='e', pady=5,
+		l_rujuk = tk.Label(self, text='Rujukan :', anchor='e', pady=5,
 				font=self.fonts[0])
-		l_pasien = tk.Label(self, text="Pasien :", anchor='e', pady=5,
+		l_pasien = tk.Label(self, text='Pasien :', anchor='e', pady=5,
 				font=self.fonts[0])
 
 		l_tindak.grid(row=0, column=0, sticky='we')
@@ -42,11 +42,11 @@ class Frame(tk.Frame):
 		self.e_rujuk.grid(row=1, column=1, columns=2)
 		self.e_pasien.grid(row=2, column=1, columns=2)
 
-		b_normal = tk.Button(self, text="Normal", font=self.fonts[0],
+		b_normal = tk.Button(self, text='Normal', font=self.fonts[0],
 				command=lambda : self.wrapper(etkd.normal))
-		b_senam = tk.Button(self, text="Senam", font=self.fonts[0],
+		b_senam = tk.Button(self, text='Senam', font=self.fonts[0],
 				command=lambda : self.wrapper(etkd.senam))
-		b_sabtu = tk.Button(self, text="Sabtu", font=self.fonts[0],
+		b_sabtu = tk.Button(self, text='Sabtu', font=self.fonts[0],
 				command=lambda : self.wrapper(etkd.sabtu))
 
 		b_normal.grid(row=3, column=0)
@@ -57,13 +57,13 @@ class Frame(tk.Frame):
 		self.l_progress.grid(row=4, column=0, columnspan=4, sticky='we')
 
 		# other options
-		b_mouse = tk.Checkbutton(self, text="Cek Mouse", font=self.fonts[0],
+		b_mouse = tk.Checkbutton(self, text='Cek Mouse', font=self.fonts[0],
 				anchor='w', command=self.checkMouse)
-		b_mengetes = tk.Checkbutton(self, text="Mengetes", font=self.fonts[0],
+		b_mengetes = tk.Checkbutton(self, text='Mengetes', font=self.fonts[0],
 				anchor='w', command=etkd.mengetes)
-		b_calib1 = tk.Button(self, text="Calibrate", font=self.fonts[0],
+		b_calib1 = tk.Button(self, text='Calibrate', font=self.fonts[0],
 				anchor='w', command=self.calibrate)
-		b_calib2  = tk.Button(self, text="Calib 2", font=self.fonts[0],
+		b_calib2  = tk.Button(self, text='Calib 2', font=self.fonts[0],
 				anchor='w', command=etkd.calibrate2)
 
 		b_mouse.grid(row=0, column=3, sticky='we')
@@ -72,7 +72,7 @@ class Frame(tk.Frame):
 		b_calib2.grid(row=3, column=3, sticky='we')
 
 	def get(self, func):
-		"""Get entries."""
+		'''Get entries.'''
 		etkd.j_tindak = int(self.e_tindak.get())
 		etkd.j_pasien = int(self.e_pasien.get())
 
@@ -97,8 +97,8 @@ class Frame(tk.Frame):
 			self.gM()
 
 	def gM(self):
-		"""Get mouse location and the color on the mouse coordinate
-		for every quarter of a second."""
+		'''Get mouse location and the color on the mouse coordinate
+		for every quarter of a second.'''
 		if self.getMouse:
 			mpos = pag.position()
 			pcolor = pag.screenshot(region=(mpos[0], mpos[1], 1, 1))
@@ -124,7 +124,7 @@ class Frame(tk.Frame):
 		calib.mainloop()
 
 	def dest(self, window, func):
-		"""Destroy the window after running the function."""
+		'''Destroy the window after running the function.'''
 		func()
 		window.destroy()
 
@@ -138,30 +138,30 @@ class Frame(tk.Frame):
 			self.get(func)
 			func()
 		except ValueError:
-			self.l_progress.configure(text="The numbers are invalid!",
+			self.l_progress.configure(text='The numbers are invalid!',
 					bg='yellow')
 
 			self.master.after(1000, lambda : self.l_progress.configure(
-					text="", bg="green"))
+					text='', bg='green'))
 
 			self.delete()
 
 		except pag.FailSafeException:
-			print("!!ABORTED!!")
-			self.l_progress.configure(text="!!ABORTED!!", bg="yellow")
+			print('!!ABORTED!!')
+			self.l_progress.configure(text='!!ABORTED!!', bg='yellow')
 		else:
 			self.delete()
-			self.l_progress.configure(text="", bg="green")
+			self.l_progress.configure(text='', bg='green')
 			print('\tTime = {} seconds'.format(ttime() - timer))
 
 def main():
 	root = tk.Tk()
-	root.title("autoKinerja")
+	root.title('autoKinerja')
 
 	app = Frame(root)
 	app.pack()
 
 	root.mainloop()
 
-if __name__ == "__main__":
+if __name__ == '__main__':
 	main()
