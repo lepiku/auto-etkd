@@ -7,7 +7,7 @@ from time import sleep as tsleep
 
 # setting variables and delays, sometimes different for every OS
 realPause = 0
-testPause = 0
+testPause = 0.001
 testVar = False
 waitDelay = 0.001
 
@@ -117,7 +117,8 @@ def calibrate2():
 		print('Calibration Successful!')
 
 	waitClockInput(3)
-	pag.typewrite('\t\t\t\t\t\n')
+	pag.typewrite('\t\t\t\t\t\n', interval=0.005)
+	waitSubmit()
 	pag.scroll(20)
 
 def mengetes():
