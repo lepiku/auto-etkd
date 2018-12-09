@@ -135,7 +135,7 @@ class Frame(tk.Frame):
 		but1.pack(side='left')
 		but2.pack(side='right')
 
-		calib.mainloop()
+		sett.mainloop()
 
 	def dest(self, window, func):
 		'''Destroy the window after running the function.'''
