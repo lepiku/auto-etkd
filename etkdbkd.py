@@ -4,6 +4,7 @@ import tkinter as tk
 import pyautogui as pag
 from time import time as ttime, sleep as tsleep
 import etkdLinux as etkd
+
 class Frame(tk.Frame):
 	def __init__(self, master):
 		super().__init__(master)
@@ -61,14 +62,14 @@ class Frame(tk.Frame):
 				anchor='w', command=self.checkMouse)
 		b_mengetes = tk.Checkbutton(self, text='Mengetes', font=self.fonts[0],
 				anchor='w', command=etkd.mengetes)
-		b_calib1 = tk.Button(self, text='Calibrate', font=self.fonts[0],
+		b_calib = tk.Button(self, text='Calibrate', font=self.fonts[0],
 				anchor='w', command=self.calibrate)
-		b_calib2  = tk.Button(self, text='Calib 2', font=self.fonts[0],
-				anchor='w', command=etkd.calibrate2)
+		b_settings  = tk.Button(self, text='Settings', font=self.fonts[0],
+				anchor='w', command=self.settings)
 
 		b_mouse.grid(row=0, column=3, sticky='we')
 		b_mengetes.grid(row=1, column=3, sticky='we')
-		b_calib1.grid(row=2, column=3, sticky='we')
+		b_calib.grid(row=2, column=3, sticky='we')
 		b_calib2.grid(row=3, column=3, sticky='we')
 
 	def get(self, func):
@@ -127,6 +128,9 @@ class Frame(tk.Frame):
 		'''Destroy the window after running the function.'''
 		func()
 		window.destroy()
+
+	def settings(self):
+		pass
 
 	# wraps commands with get function and a timer
 	def wrapper(self, func):
