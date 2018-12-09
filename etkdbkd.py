@@ -70,7 +70,7 @@ class Frame(tk.Frame):
 		b_mouse.grid(row=0, column=3, sticky='we')
 		b_mengetes.grid(row=1, column=3, sticky='we')
 		b_calib.grid(row=2, column=3, sticky='we')
-		b_calib2.grid(row=3, column=3, sticky='we')
+		b_settings.grid(row=3, column=3, sticky='we')
 
 	def get(self, func):
 		'''Get entries.'''
