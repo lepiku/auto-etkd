@@ -20,10 +20,12 @@ button1x = 1831
 button1y = [246, 394, 542, 690, 837]
 
 # calibration settings
-windowNamePath = '/home/dimas/Dropbox/Python/autoKinerja/ekinerjaWindow.png'
-laporkanButtonPath = '/home/dimas/Dropbox/Python/autoKinerja/' + \
-			'laporkanButtonL.png'
-clockButtonPath = '/home/dimas/Dropbox/Python/autoKinerja/clockButton.png'
+windowNamePath = '/home/dimas/Dropbox/Python/autoKinerja/images/' + \
+		'ekinerjaWindow.png'
+laporkanButtonPath = '/home/dimas/Dropbox/Python/autoKinerja/images/' + \
+		'laporkanButton.png'
+clockButtonPath = '/home/dimas/Dropbox/Python/autoKinerja/images/' + \
+		'clockButton.png'
 
 windowLocation = (1315, 13, 115, 5)
 lapOffsetx = -9
@@ -352,6 +354,6 @@ def dikit():
 	meKocam(j_pasien)
 
 if __name__ == '__main__':
-	# check until etkd website is opened 
+	# check until etkd website is opened
 	while not checkKinerja():
 		tsleep(1)
