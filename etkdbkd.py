@@ -124,13 +124,23 @@ class Frame(tk.Frame):
 
 		calib.mainloop()
 
+	def settings(self):
+		sett = tk.Tk()
+
+		but1 = tk.Button(sett, text='setting1',
+				)
+		but2 = tk.Button(sett, text='setting2',
+				)
+
+		but1.pack(side='left')
+		but2.pack(side='right')
+
+		calib.mainloop()
+
 	def dest(self, window, func):
 		'''Destroy the window after running the function.'''
 		func()
 		window.destroy()
-
-	def settings(self):
-		pass
 
 	# wraps commands with get function and a timer
 	def wrapper(self, func):
