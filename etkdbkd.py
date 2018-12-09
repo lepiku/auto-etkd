@@ -1,10 +1,12 @@
 # autoKinerja etkdbkd GUI
-
+# imports required modules
 import tkinter as tk
 import pyautogui as pag
 from time import time as ttime, sleep as tsleep
 import etkdLinux as etkd
+
 class Frame(tk.Frame):
+	'''GUI for the program.'''
 	def __init__(self, master):
 		super().__init__(master)
 		self.master = master
@@ -23,6 +25,8 @@ class Frame(tk.Frame):
 		self.widgets()
 
 	def widgets(self):
+		'''Create the widgets.'''
+		# labels
 		l_tindak = tk.Label(self, text='Tindakan :', anchor='e', pady=5,
 				font=self.fonts[0])
 		l_rujuk = tk.Label(self, text='Rujukan :', anchor='e', pady=5,
@@ -34,6 +38,7 @@ class Frame(tk.Frame):
 		l_rujuk.grid(row=1, column=0, sticky='we')
 		l_pasien.grid(row=2, column=0, sticky='we')
 
+		# entries
 		self.e_tindak = tk.Entry(self, font=self.fonts[0])
 		self.e_rujuk = tk.Entry(self, font=self.fonts[0])
 		self.e_pasien = tk.Entry(self, font=self.fonts[0])
@@ -42,6 +47,7 @@ class Frame(tk.Frame):
 		self.e_rujuk.grid(row=1, column=1, columns=2)
 		self.e_pasien.grid(row=2, column=1, columns=2)
 
+		# buttons
 		b_normal = tk.Button(self, text='Normal', font=self.fonts[0],
 				command=lambda : self.wrapper(etkd.normal))
 		b_senam = tk.Button(self, text='Senam', font=self.fonts[0],
@@ -53,26 +59,24 @@ class Frame(tk.Frame):
 		b_senam.grid(row=3, column=1)
 		b_sabtu.grid(row=3, column=2)
 
+		# progress bar
 		self.l_progress = tk.Label(self, font=self.fonts[0], bg='green')
 		self.l_progress.grid(row=4, column=0, columnspan=4, sticky='we')
 
-		# other options
+		# other buttons
 		b_mouse = tk.Checkbutton(self, text='Cek Mouse', font=self.fonts[0],
 				anchor='w', command=self.checkMouse)
 		b_mengetes = tk.Checkbutton(self, text='Mengetes', font=self.fonts[0],
 				anchor='w', command=etkd.mengetes)
 		b_calib1 = tk.Button(self, text='Calibrate', font=self.fonts[0],
 				anchor='w', command=self.calibrate)
-		b_calib2  = tk.Button(self, text='Calib 2', font=self.fonts[0],
-				anchor='w', command=etkd.calibrate2)
 
 		b_mouse.grid(row=0, column=3, sticky='we')
 		b_mengetes.grid(row=1, column=3, sticky='we')
 		b_calib1.grid(row=2, column=3, sticky='we')
-		b_calib2.grid(row=3, column=3, sticky='we')
 
 	def get(self, func):
-		'''Get entries.'''
+		'''Get from all entries.'''
 		etkd.j_tindak = int(self.e_tindak.get())
 		etkd.j_pasien = int(self.e_pasien.get())
 
@@ -82,16 +86,18 @@ class Frame(tk.Frame):
 		else:
 			etkd.j_rujuk = int(self.e_rujuk.get())
 
-		# it the numbers is too big
+		# if the numbers is too big
 		if etkd.j_tindak + etkd.j_rujuk + etkd.j_pasien > 100:
 			raise ValueError
 
 	def delete(self):
+		'''Delete all entries.'''
 		self.e_tindak.delete(0, 'end')
 		self.e_rujuk.delete(0, 'end')
 		self.e_pasien.delete(0, 'end')
 
 	def checkMouse(self):
+		'''Change the status of get mouse command.'''
 		self.getMouse = not self.getMouse
 		if self.getMouse:
 			self.gM()
@@ -111,6 +117,7 @@ class Frame(tk.Frame):
 			self.master.after(250, self.gM)
 
 	def calibrate(self):
+		'''Make new window for calibration options.'''
 		calib = tk.Tk()
 
 		but1 = tk.Button(calib, text='Calibrate\nLaporkan Button',
@@ -130,6 +137,7 @@ class Frame(tk.Frame):
 
 	# wraps commands with get function and a timer
 	def wrapper(self, func):
+		'''Wraps the function with a timer and showing the progress.'''
 		timer = ttime()
 		self.l_progress.configure(text='', bg='red')
 		self.l_progress.update()
@@ -137,6 +145,7 @@ class Frame(tk.Frame):
 		try:
 			self.get(func)
 			func()
+		# if the entries input aren't numbers
 		except ValueError:
 			self.l_progress.configure(text='The numbers are invalid!',
 					bg='yellow')
@@ -145,16 +154,18 @@ class Frame(tk.Frame):
 					text='', bg='green'))
 
 			self.delete()
-
+		# if you move the mouse to coordinate 0,0
 		except pag.FailSafeException:
 			print('!!ABORTED!!')
 			self.l_progress.configure(text='!!ABORTED!!', bg='yellow')
+		# if no error exist
 		else:
-			self.delete()
 			self.l_progress.configure(text='', bg='green')
 			print('\tTime = {} seconds'.format(ttime() - timer))
+			self.delete()
 
 def main():
+	'''Running the GUI.'''
 	root = tk.Tk()
 	root.title('autoKinerja')
 

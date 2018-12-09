@@ -31,8 +31,8 @@ lapOffsety = 10
 clockOffsetx = 7
 clockOffsety = 129
 
-blueEdgex = 1375 # blue edge X coordinate
-blueEdgey = 683 # blue edge Y coordinate
+blueEdgex = 1375
+blueEdgey = 683
 
 # failsafe and settings
 pag.PAUSE = 0
@@ -183,14 +183,14 @@ def waitClockInput(button):
 	pag.click(x=blueEdgex, y=blueEdgey, clicks=3, interval=0)
 
 def autoChangeNum():
-	'''Automatically press down until it doesn't move anymore.'''
+	'''Automatically press down arrow key until it reached the maximum.'''
 	for i in range(5):
 		pag.press('down')
 	pag.press('tab')
 
 def waitSubmit():
 	'''Wait after you clicked 'Simpan' or 'Batal'.
-	Check the simpan button until it isn't blue.
+	It checks the simpan button until it isn't blue.
 	'''
 	while pag.screenshot(region=(1375, 1000, 1, 1)).getpixel((0, 0))[0] in \
 			(26, 28):
@@ -352,5 +352,6 @@ def dikit():
 	meKocam(j_pasien)
 
 if __name__ == '__main__':
+	# check until etkd website is opened 
 	while not checkKinerja():
 		tsleep(1)
