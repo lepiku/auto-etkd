@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /bin/bash
 
 # added by Anaconda3 5.3.0 installer
 # >>> conda init >>>

@@ -20,10 +20,12 @@ button1x = 1831
 button1y = [246, 394, 542, 690, 837]
 
 # calibration settings
-windowNamePath = '/home/dimas/Dropbox/Python/autoKinerja/ekinerjaWindow.png'
-laporkanButtonPath = '/home/dimas/Dropbox/Python/autoKinerja/' + \
-			'laporkanButtonL.png'
-clockButtonPath = '/home/dimas/Dropbox/Python/autoKinerja/clockButton.png'
+windowNamePath = '/home/dimas/Dropbox/Python/autoKinerja/images/' + \
+		'ekinerjaWindow.png'
+laporkanButtonPath = '/home/dimas/Dropbox/Python/autoKinerja/images/' + \
+		'laporkanButton.png'
+clockButtonPath = '/home/dimas/Dropbox/Python/autoKinerja/images/' + \
+		'clockButton.png'
 
 windowLocation = (1315, 13, 115, 5)
 lapOffsetx = -9
@@ -31,8 +33,8 @@ lapOffsety = 10
 clockOffsetx = 7
 clockOffsety = 129
 
-blueEdgex = 1375 # blue edge X coordinate
-blueEdgey = 683 # blue edge Y coordinate
+blueEdgex = 1375
+blueEdgey = 683
 
 # failsafe and settings
 pag.PAUSE = 0
@@ -183,14 +185,14 @@ def waitClockInput(button):
 	pag.click(x=blueEdgex, y=blueEdgey, clicks=3, interval=0)
 
 def autoChangeNum():
-	'''Automatically press down until it doesn't move anymore.'''
+	'''Automatically press down arrow key until it reached the maximum.'''
 	for i in range(5):
 		pag.press('down')
 	pag.press('tab')
 
 def waitSubmit():
 	'''Wait after you clicked 'Simpan' or 'Batal'.
-	Check the simpan button until it isn't blue.
+	It checks the simpan button until it isn't blue.
 	'''
 	while pag.screenshot(region=(1375, 1000, 1, 1)).getpixel((0, 0))[0] in \
 			(26, 28):
@@ -352,5 +354,6 @@ def dikit():
 	meKocam(j_pasien)
 
 if __name__ == '__main__':
+	# check until etkd website is opened
 	while not checkKinerja():
 		tsleep(1)
