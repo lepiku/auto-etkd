@@ -70,7 +70,6 @@ class Frame(tk.Frame):
 				anchor='w', command=etkd.mengetes)
 		b_calib = tk.Button(self, text='Calibrate', font=self.fonts[0],
 				anchor='w', command=self.calibrate)
-<<<<<<< HEAD
 		b_settings  = tk.Button(self, text='Settings', font=self.fonts[0],
 				anchor='w', command=self.settings)
 
@@ -78,12 +77,6 @@ class Frame(tk.Frame):
 		b_mengetes.grid(row=1, column=3, sticky='we')
 		b_calib.grid(row=2, column=3, sticky='we')
 		b_settings.grid(row=3, column=3, sticky='we')
-=======
-
-		b_mouse.grid(row=0, column=3, sticky='we')
-		b_mengetes.grid(row=1, column=3, sticky='we')
-		b_calib1.grid(row=2, column=3, sticky='we')
->>>>>>> master
 
 	def get(self, func):
 		'''Get from all entries.'''
