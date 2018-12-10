@@ -1,5 +1,6 @@
 # Ignoring python cache files
 __pycache__/
+*.py[cod]
 
 # Ignoring unused resource folder
 unused/
