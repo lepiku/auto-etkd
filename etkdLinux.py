@@ -7,7 +7,7 @@ from time import sleep as tsleep
 
 # setting variables and delays, sometimes different for every OS
 realPause = 0
-testPause = 0.001
+testPause = 0.4
 testVar = False
 waitDelay = 0.001
 
@@ -295,63 +295,63 @@ def kocam(pasien, tOpt):
 	pag.scroll(20)
 
 # Saved 'tindakan' preset
-def meTindak(tindakan):
+def meTindak():
 	'''Normal 'tindakan'.'''
 	tOpt = ['07:30', '09:00', '10:30', '12:00']
-	tindak(tindakan, tOpt)
-def seTindak(tindakan):
+	tindak(j_tindak, tOpt)
+def seTindak():
 	'''Senam 'tindakan'.'''
 	tOpt = ['08:30', '10:00', '11:00', '12:00']
-	tindak(tindakan, tOpt)
-def diTindak(tindakan):
+	tindak(j_tindak, tOpt)
+def diTindak():
 	'''Only a few 'tindakan'.'''
 	tOpt = ['07:30', '09:00', '10:30']
-	tindak(tindakan, tOpt)
+	tindak(j_tindak, tOpt)
 
 # Saved 'rujukan' preset
-def meRujuk(rujukan):
+def meRujuk():
 	'''Normal 'rujukan'.'''
 	tOpt = ['12:00', '12:30']
-	rujuk(rujukan, tOpt)
-def diRujuk(rujukan):
+	rujuk(j_rujuk, tOpt)
+def diRujuk():
 	'''Only a few 'rujukan'.'''
 	tOpt = ['10:30', '11:00']
-	rujuk(rujukan, tOpt)
+	rujuk(j_rujuk, tOpt)
 
 # Saved 'konsultasi dan catatan medik' preset
-def meKocam(pasien):
+def meKocam():
 	'''Normal 'konsultasi dan catatan medik'.'''
 	tOpt = ['12:30', '13:30', '14:00']
-	kocam(pasien, tOpt)
-def saKocam(pasien):
+	kocam(j_pasien, tOpt)
+def saKocam():
 	'''Saturday 'konsultasi dan catatan medik'.'''
 	tOpt = ['12:00', '12:30', '13:00']
-	kocam(pasien, tOpt)
-def diKocam(pasien):
+	kocam(j_pasien, tOpt)
+def diKocam():
 	'''Only a few 'konsultasi dan catatan medik'.'''
 	tOpt = ['11:00', '11:30', '12:00']
-	kocam(pasien, tOpt)
+	kocam(j_pasien, tOpt)
 
 # Daftar fungsi-fungsi yang bisa dijalankan
 def normal():
 	'''Untuk hari-hari biasa.'''
-	meTindak(j_tindak)
-	meRujuk(j_rujuk)
-	meKocam(j_pasien)
+	meTindak()
+	meRujuk()
+	meKocam()
 def senam():
 	'''Untuk hari rabu saat ada senam.'''
-	meTindak(j_tindak)
-	meRujuk(j_rujuk)
-	meKocam(j_pasien)
+	meTindak()
+	meRujuk()
+	meKocam()
 def sabtu():
 	''' Untuk hari sabtu yang tanpa rujukan.'''
-	meTindak(j_tindak)
-	meKocam(j_pasien)
+	meTindak()
+	meKocam()
 def dikit():
 	'''Untuk hari biasa saat pasien sedikit.'''
-	meTindak(j_tindak)
-	meRujuk(j_rujuk)
-	meKocam(j_pasien)
+	meTindak()
+	meRujuk()
+	meKocam()
 
 if __name__ == '__main__':
 	# check until etkd website is opened

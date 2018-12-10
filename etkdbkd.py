@@ -48,16 +48,16 @@ class Frame(tk.Frame):
 		self.e_pasien.grid(row=2, column=1, columns=2)
 
 		# buttons
-		b_normal = tk.Button(self, text='Normal', font=self.fonts[0],
-				command=lambda : self.wrapper(etkd.normal))
-		b_senam = tk.Button(self, text='Senam', font=self.fonts[0],
-				command=lambda : self.wrapper(etkd.senam))
-		b_sabtu = tk.Button(self, text='Sabtu', font=self.fonts[0],
-				command=lambda : self.wrapper(etkd.sabtu))
+		b_normal = tk.Button(self, text='Normal', font=self.fonts[0], bg='yellow',
+				command=lambda : self.wrapper(self.get, etkd.normal))
+		b_senam = tk.Button(self, text='Senam', font=self.fonts[0], bg='yellow',
+				command=lambda : self.wrapper(self.get, etkd.senam))
+		b_sabtu = tk.Button(self, text='Sabtu', font=self.fonts[0], bg='yellow',
+				command=lambda : self.wrapper(self.get, etkd.sabtu))
 
-		b_normal.grid(row=3, column=0)
-		b_senam.grid(row=3, column=1)
-		b_sabtu.grid(row=3, column=2)
+		b_normal.grid(row=3, column=0, sticky='we')
+		b_senam.grid(row=3, column=1, sticky='we')
+		b_sabtu.grid(row=3, column=2, sticky='we')
 
 		# progress bar
 		self.l_progress = tk.Label(self, font=self.fonts[0], bg='green')
@@ -77,21 +77,6 @@ class Frame(tk.Frame):
 		b_mengetes.grid(row=1, column=3, sticky='we')
 		b_calib.grid(row=2, column=3, sticky='we')
 		b_settings.grid(row=3, column=3, sticky='we')
-
-	def get(self, func):
-		'''Get from all entries.'''
-		etkd.j_tindak = int(self.e_tindak.get())
-		etkd.j_pasien = int(self.e_pasien.get())
-
-		# if on saturday, dont check rujukan
-		if func == etkd.sabtu:
-			etkd.j_rujuk = 0
-		else:
-			etkd.j_rujuk = int(self.e_rujuk.get())
-
-		# if the numbers is too big
-		if etkd.j_tindak + etkd.j_rujuk + etkd.j_pasien > 100:
-			raise ValueError
 
 	def delete(self):
 		'''Delete all entries.'''
@@ -136,13 +121,35 @@ class Frame(tk.Frame):
 	def settings(self):
 		sett = tk.Tk()
 
-		but1 = tk.Button(sett, text='setting1',
-				)
-		but2 = tk.Button(sett, text='setting2',
-				)
+		tin0 = tk.Button(sett, text='Normal tindakan',
+				command=lambda: self.wrapper(self.get1, etkd.meTindak))
+		tin1 = tk.Button(sett, text='Senam tindakan',
+				command=lambda: self.wrapper(self.get1, etkd.seTindak))
+		tin2 = tk.Button(sett, text='Dikit tindakan',
+				command=lambda: self.wrapper(self.get1, etkd.diTindak))
 
-		but1.pack(side='left')
-		but2.pack(side='right')
+		tin0.grid(row=0, column=0, sticky='we')
+		tin1.grid(row=1, column=0, sticky='we')
+		tin2.grid(row=2, column=0, sticky='we')
+
+		ruj0 = tk.Button(sett, text='Normal rujukan',
+				command=lambda: self.wrapper(self.get1, etkd.meRujuk))
+		ruj1 = tk.Button(sett, text='Senam rujukan',
+				command=lambda: self.wrapper(self.get1, etkd.diRujuk))
+
+		ruj0.grid(row=0, column=1, sticky='we')
+		ruj1.grid(row=1, column=1, sticky='we')
+
+		koc0 = tk.Button(sett, text='Normal kocam',
+				command=lambda: self.wrapper(self.get1, etkd.meKocam))
+		koc1 = tk.Button(sett, text='Sabtu kocam',
+				command=lambda: self.wrapper(self.get1, etkd.saKocam))
+		koc2 = tk.Button(sett, text='Dikit kocam',
+				command=lambda: self.wrapper(self.get1, etkd.diKocam))
+
+		koc0.grid(row=0, column=2, sticky='we')
+		koc1.grid(row=1, column=2, sticky='we')
+		koc2.grid(row=2, column=2, sticky='we')
 
 		sett.mainloop()
 
@@ -152,14 +159,14 @@ class Frame(tk.Frame):
 		window.destroy()
 
 	# wraps commands with get function and a timer
-	def wrapper(self, func):
+	def wrapper(self, get_func, func):
 		'''Wraps the function with a timer and showing the progress.'''
 		timer = ttime()
 		self.l_progress.configure(text='', bg='red')
 		self.l_progress.update()
 		print()
 		try:
-			self.get(func)
+			get_func(func)
 			func()
 		# if the entries input aren't numbers
 		except ValueError:
@@ -179,6 +186,31 @@ class Frame(tk.Frame):
 			self.l_progress.configure(text='', bg='green')
 			print('\tTime = {} seconds'.format(ttime() - timer))
 			self.delete()
+
+	def get(self, func):
+		'''Get from all entries.'''
+		etkd.j_tindak = int(self.e_tindak.get())
+		etkd.j_pasien = int(self.e_pasien.get())
+
+		# if on saturday, dont check rujukan
+		if func == etkd.sabtu:
+			etkd.j_rujuk = 0
+		else:
+			etkd.j_rujuk = int(self.e_rujuk.get())
+
+		# if the numbers is too big
+		if etkd.j_tindak + etkd.j_rujuk + etkd.j_pasien > 100:
+			raise ValueError
+
+	def get1(self, func):
+		if func in [etkd.meTindak, etkd.seTindak, etkd.diTindak]:
+			etkd.j_tindak = int(self.e_tindak.get())
+
+		elif func in [etkd.meRujuk, etkd.diRujuk]:
+			etkd.j_rujuk = int(self.e_rujuk.get())
+
+		elif func in [etkd.meKocam, etkd.saKocam, etkd.diKocam]:
+			etkd.j_pasien = int(self.e_pasien.get())
 
 def main():
 	'''Running the GUI.'''
