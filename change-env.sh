@@ -18,7 +18,7 @@ fi
 unset __conda_setup
 # <<< conda init <<<
 
-python3 ~/Dropbox/Python/autoKinerja/etkdbkd.py
+python3 ~/Dropbox/Python/auto-etkd/etkdbkd.py
 
 echo "[END OF PROGRAM]"
 read

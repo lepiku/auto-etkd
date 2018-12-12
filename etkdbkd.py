@@ -22,9 +22,9 @@ class Frame(tk.Frame):
 			tsleep(1)
 
 		# create widgets
-		self.widgets()
+		self.create_widgets()
 
-	def widgets(self):
+	def create_widgets(self):
 		'''Create the widgets.'''
 		# labels
 		l_tindak = tk.Label(self, text='Tindakan :', anchor='e', pady=5,
@@ -70,13 +70,13 @@ class Frame(tk.Frame):
 				anchor='w', command=etkd.mengetes)
 		b_calib = tk.Button(self, text='Calibrate', font=self.fonts[0],
 				anchor='w', command=self.calibrate)
-		b_settings  = tk.Button(self, text='Settings', font=self.fonts[0],
-				anchor='w', command=self.settings)
+		b_options  = tk.Button(self, text='Options', font=self.fonts[0],
+				anchor='w', command=self.options)
 
 		b_mouse.grid(row=0, column=3, sticky='we')
 		b_mengetes.grid(row=1, column=3, sticky='we')
 		b_calib.grid(row=2, column=3, sticky='we')
-		b_settings.grid(row=3, column=3, sticky='we')
+		b_options.grid(row=3, column=3, sticky='we')
 
 	def delete(self):
 		'''Delete all entries.'''
@@ -107,6 +107,7 @@ class Frame(tk.Frame):
 	def calibrate(self):
 		'''Make new window for calibration options.'''
 		calib = tk.Tk()
+		calib.title('Calibrate')
 
 		but1 = tk.Button(calib, text='Calibrate\nLaporkan Button',
 				command=lambda: self.dest(calib, etkd.calibrate1))
@@ -118,40 +119,27 @@ class Frame(tk.Frame):
 
 		calib.mainloop()
 
-	def settings(self):
-		sett = tk.Tk()
+	def options(self):
+		opts = tk.Tk()
+		opts.title('auto-etkd Options')
 
-		tin0 = tk.Button(sett, text='Normal tindakan',
-				command=lambda: self.wrapper(self.get1, etkd.meTindak))
-		tin1 = tk.Button(sett, text='Senam tindakan',
-				command=lambda: self.wrapper(self.get1, etkd.seTindak))
-		tin2 = tk.Button(sett, text='Dikit tindakan',
-				command=lambda: self.wrapper(self.get1, etkd.diTindak))
+		preset =   [[('Normal tindakan', etkd.meTindak),
+					('Senam tindakan', etkd.seTindak),
+					('Dikit tindakan', etkd.diTindak)],
+					[('Normal rujukan', etkd.meRujuk),
+					('Dikit rujukan', etkd.diRujuk)],
+					[('Normal kocam', etkd.meKocam),
+					('Sabtu kocam', etkd.saKocam),
+					('Dikit Kocam', etkd.diKocam)]]
 
-		tin0.grid(row=0, column=0, sticky='we')
-		tin1.grid(row=1, column=0, sticky='we')
-		tin2.grid(row=2, column=0, sticky='we')
+		for x in range(len(preset)):
+			for y in range(len(preset[x])):
+				button = tk.Button(opts, text=preset[x][y][0],
+						command=lambda c=preset[x][y][1]:
+								self.wrapper(self.get1, c))
+				button.grid(row=y, column=x, sticky='we')
 
-		ruj0 = tk.Button(sett, text='Normal rujukan',
-				command=lambda: self.wrapper(self.get1, etkd.meRujuk))
-		ruj1 = tk.Button(sett, text='Senam rujukan',
-				command=lambda: self.wrapper(self.get1, etkd.diRujuk))
-
-		ruj0.grid(row=0, column=1, sticky='we')
-		ruj1.grid(row=1, column=1, sticky='we')
-
-		koc0 = tk.Button(sett, text='Normal kocam',
-				command=lambda: self.wrapper(self.get1, etkd.meKocam))
-		koc1 = tk.Button(sett, text='Sabtu kocam',
-				command=lambda: self.wrapper(self.get1, etkd.saKocam))
-		koc2 = tk.Button(sett, text='Dikit kocam',
-				command=lambda: self.wrapper(self.get1, etkd.diKocam))
-
-		koc0.grid(row=0, column=2, sticky='we')
-		koc1.grid(row=1, column=2, sticky='we')
-		koc2.grid(row=2, column=2, sticky='we')
-
-		sett.mainloop()
+		opts.mainloop()
 
 	def dest(self, window, func):
 		'''Destroy the window after running the function.'''
@@ -164,10 +152,10 @@ class Frame(tk.Frame):
 		timer = ttime()
 		self.l_progress.configure(text='', bg='red')
 		self.l_progress.update()
-		print()
 		try:
 			get_func(func)
 			func()
+			print()
 		# if the entries input aren't numbers
 		except ValueError:
 			self.l_progress.configure(text='The numbers are invalid!',
@@ -215,7 +203,7 @@ class Frame(tk.Frame):
 def main():
 	'''Running the GUI.'''
 	root = tk.Tk()
-	root.title('autoKinerja')
+	root.title('Etkdbkd Autofill Bot')
 
 	app = Frame(root)
 	app.pack()

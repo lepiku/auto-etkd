@@ -20,11 +20,11 @@ button1x = 1831
 button1y = [246, 394, 542, 690, 837]
 
 # calibration settings
-windowNamePath = '/home/dimas/Dropbox/Python/autoKinerja/images/' + \
+windowNamePath = '/home/dimas/Dropbox/Python/auto-etkd/images/' + \
 		'ekinerjaWindow.png'
-laporkanButtonPath = '/home/dimas/Dropbox/Python/autoKinerja/images/' + \
+laporkanButtonPath = '/home/dimas/Dropbox/Python/auto-etkd/images/' + \
 		'laporkanButton.png'
-clockButtonPath = '/home/dimas/Dropbox/Python/autoKinerja/images/' + \
+clockButtonPath = '/home/dimas/Dropbox/Python/auto-etkd/images/' + \
 		'clockButton.png'
 
 windowLocation = (1315, 13, 115, 5)
