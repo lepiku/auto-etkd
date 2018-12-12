@@ -7,7 +7,7 @@ from time import sleep as tsleep
 
 # setting variables and delays, sometimes different for every OS
 realPause = 0
-testPause = 0.4
+testPause = 0
 testVar = False
 waitDelay = 0.001
 
