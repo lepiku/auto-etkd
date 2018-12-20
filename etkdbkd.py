@@ -155,7 +155,6 @@ class Frame(tk.Frame):
 		try:
 			get_func(func)
 			func()
-			print()
 		# if the entries input aren't numbers
 		except ValueError:
 			self.l_progress.configure(text='The numbers are invalid!',
@@ -172,7 +171,7 @@ class Frame(tk.Frame):
 		# if no error exist
 		else:
 			self.l_progress.configure(text='', bg='green')
-			print('\tTime = {} seconds'.format(ttime() - timer))
+			print('\tTime = {} seconds\n'.format(ttime() - timer))
 			self.delete()
 
 	def get(self, func):
