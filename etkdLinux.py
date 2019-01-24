@@ -6,8 +6,8 @@ import pyautogui as pag
 from time import sleep as tsleep
 
 # setting variables and delays, sometimes different for every OS
-realPause = 0
-testPause = 0
+realPause = 0.2
+testPause = 0.5
 testVar = False
 waitDelay = 0.001
 
@@ -196,7 +196,7 @@ def waitSubmit():
 	'''Wait after you clicked 'Simpan' or 'Batal'.
 	It checks the simpan button until it isn't blue.
 	'''
-	checkPixel(1375, 1000, (26, 28))
+	checkPixel(blueEdgex, blueEdgey + 317, (26, 28))
 #	while pag.screenshot(region=(1375, 1000, 1, 1)).getpixel((0, 0))[0] in \
 #			(26, 28):
 #		tsleep(waitDelay)
@@ -213,6 +213,7 @@ def submit():
 	return '\t\t\n'
 
 def checkPixel(x, y, color):
+	'''Check the pixel color of x and y.'''
 	if type(color) in (tuple, list):
 		while pag.screenshot(region=(x, y, 1, 1)).getpixel((0, 0))[0] in color:
 			tsleep(waitDelay)
@@ -226,16 +227,33 @@ def isiSenam():
 	'''Input 'senam' activity in 'Aktifitas Umum'.'''
 	tabButtonx = 1400
 	tabButtony = 600
-#	button2x = 
-#	button2y = 
+	button2x = 1800
+	button2y = 920
 
 	button1Check()
 	pag.scroll(scrollValue // 2)
 	tsleep(scrollDelay)
 	pag.click(tabButtonx, tabButtony) # click aktivitas umum
 
-	# check untul 'Tambah Laporan' can be clicked
-	checkPixel(tabButtonx - 50, tabButtony, 255)
+	# check until 'Tambah Laporan' can be clicked
+	checkPixel(tabButtonx - 50, tabButtony, 220)
+	pag.click(button2x, button2y)
+	checkPixel(button2x, button2y, (26, 28))
+
+	while pag.screenshot(region=(button2x - 280, button2y + 50, 1, 1)
+			).getpixel((0, 0))[0] != 246:
+		tsleep(waitDelay)
+	pag.click(button2x - 280, button2y + 50)
+	pag.typewrite("mengikuti senam\n\t07:30\t08:30\t\tSenam pagi karyawan RSUD Jagakarsa" + submit())
+
+	checkPixel(1340, 1040, (26, 28))
+	tsleep(1)
+
+	pag.click(tabButtonx - 125, tabButtony + 195)
+	checkPixel(tabButtonx - 125, tabButtony + 195, 220)
+	print('done!')
+
+
 
 def tindak(tindakan, tOpt):
 	'''Inputs 'Melakukan tindakan / terapi pengobatan'
@@ -368,6 +386,7 @@ def normal():
 	meKocam()
 def senam():
 	'''Untuk hari rabu saat ada senam.'''
+	isiSenam()
 	meTindak()
 	meRujuk()
 	meKocam()

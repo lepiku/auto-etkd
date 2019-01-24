@@ -21,4 +21,4 @@ unset __conda_setup
 python3 ~/Dropbox/Python/auto-etkd/etkdbkd.py
 
 echo "[END OF PROGRAM]"
-read
+#read
