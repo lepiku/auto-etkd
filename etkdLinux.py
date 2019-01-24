@@ -6,8 +6,8 @@ import pyautogui as pag
 from time import sleep as tsleep
 
 # setting variables and delays, sometimes different for every OS
-realPause = 0.2
-testPause = 0.5
+realPause = 0
+testPause = 0
 testVar = False
 waitDelay = 0.001
 
@@ -100,9 +100,6 @@ def calibrate2():
 	button1Check()
 	pag.click(button1x, button1y[3])
 	checkPixel(button1x, button1y[3], (26, 28))
-#	while pag.screenshot(region=(button1x, button1y[3], 1, 1)).getpixel(
-#			(0, 0))[0] in (26, 28):
-#		tsleep(waitDelay)
 
 	clockLoc = pag.locateOnScreen(clockButtonPath)
 
@@ -173,9 +170,6 @@ def button1Check():
 def waitClockInput(button):
 	'''Wait until we can click on 'Jam Mulai'.'''
 	checkPixel(button1x, button1y[button], (26, 28))
-#	while pag.screenshot(region=(button1x, button1y[button], 1, 1)).getpixel(
-#			(0, 0))[0] in (26, 28):
-#		tsleep(waitDelay)
 
 	# wait until we can input the time
 	while pag.screenshot(region=(blueEdgex, blueEdgey, 1, 1)
@@ -197,9 +191,6 @@ def waitSubmit():
 	It checks the simpan button until it isn't blue.
 	'''
 	checkPixel(blueEdgex, blueEdgey + 317, (26, 28))
-#	while pag.screenshot(region=(1375, 1000, 1, 1)).getpixel((0, 0))[0] in \
-#			(26, 28):
-#		tsleep(waitDelay)
 
 def submit():
 	'''Clicks 'Simpan' if testVar is false
@@ -221,7 +212,18 @@ def checkPixel(x, y, color):
 		while pag.screenshot(region=(x, y, 1, 1)).getpixel((0, 0))[0] == color:
 			tsleep(waitDelay)
 	else:
-		print("wrong type of color")
+		print("wrong color")
+
+def checkNotPixel(x, y, color):
+	'''Check the pixel color of x and y.'''
+	if type(color) in (tuple, list):
+		while pag.screenshot(region=(x, y, 1, 1)).getpixel((0, 0))[0] not in color:
+			tsleep(waitDelay)
+	elif type(color) == int:
+		while pag.screenshot(region=(x, y, 1, 1)).getpixel((0, 0))[0] != color:
+			tsleep(waitDelay)
+	else:
+		print("wrong color")
 
 def isiSenam():
 	'''Input 'senam' activity in 'Aktifitas Umum'.'''
@@ -240,20 +242,35 @@ def isiSenam():
 	pag.click(button2x, button2y)
 	checkPixel(button2x, button2y, (26, 28))
 
-	while pag.screenshot(region=(button2x - 280, button2y + 50, 1, 1)
-			).getpixel((0, 0))[0] != 246:
-		tsleep(waitDelay)
+	# check until the data can be inputed
+	checkNotPixel(button2x - 280, button2y + 50, 246)
 	pag.click(button2x - 280, button2y + 50)
-	pag.typewrite("mengikuti senam\n\t07:30\t08:30\t\tSenam pagi karyawan RSUD Jagakarsa" + submit())
+	pag.typewrite("mengikuti senam\n\t07:30\t08:30\t\tSenam pagi karyawan RSUD Jagakarsa"
+			+ submit())
 
+	# check until submit button is gone
 	checkPixel(1340, 1040, (26, 28))
-	tsleep(1)
+	print("first check done")
+	if not testVar:
+		for x in range(0, 10):
+			if pag.screenshot(region=(1800, 961, 1, 1)).getpixel((0, 0))[0] == 26:
+				break
+			tsleep(waitDelay)
+			print("check {}".format(x))
+#	if not testVar:
+#		checkNotPixel(1800, 961, 26)
+	print("second check done")
 
-	pag.click(tabButtonx - 125, tabButtony + 195)
-	checkPixel(tabButtonx - 125, tabButtony + 195, 220)
-	print('done!')
+	# go back to 'Aktivitas Utama'
+	tombolUtama = (tabButtonx - 130,)
+	if testVar:
+		tombolUtama += (tabButtony + 240,)
+	else:
+		tombolUtama += (tabButtony + 195,)
+	pag.click(tombolUtama[0], tombolUtama[1])
+	checkNotPixel(tombolUtama[0], tombolUtama[1], 220)
 
-
+	print('Finished Senam')
 
 def tindak(tindakan, tOpt):
 	'''Inputs 'Melakukan tindakan / terapi pengobatan'
