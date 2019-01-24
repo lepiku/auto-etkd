@@ -19,6 +19,12 @@ scrollDelay = 0.24 # delay after scolling
 button1x = 1831
 button1y = [246, 394, 542, 690, 837]
 
+# coordinates for 'Aktivitas umum' and 'Tambah Laporan' in there
+tabButtonx = 1400
+tabButtony = 600
+button2x = 1800
+button2y = 920
+
 # calibration settings
 windowNamePath = '/home/dimas/Dropbox/Python/auto-etkd/images/' + \
 		'ekinerjaWindow.png'
@@ -26,12 +32,20 @@ laporkanButtonPath = '/home/dimas/Dropbox/Python/auto-etkd/images/' + \
 		'laporkanButton.png'
 clockButtonPath = '/home/dimas/Dropbox/Python/auto-etkd/images/' + \
 		'clockButton.png'
+aktivitasUmumPath = '/home/dimas/Dropbox/Python/auto-etkd/images/' + \
+		'aktivitasUmum.png'
+tambahLaporanPath = '/home/dimas/Dropbox/Python/auto-etkd/images/' + \
+		'tambahLaporan.png'
 
 windowLocation = (1315, 13, 115, 5)
 lapOffsetx = -9
 lapOffsety = 10
 clockOffsetx = 7
 clockOffsety = 129
+aktUmumOffsetx = 27
+aktUmumOffsety = 6
+tamLapOffsetx = 37
+tamLapOffsety = 10
 
 blueEdgex = 1375
 blueEdgey = 683
@@ -120,6 +134,67 @@ def calibrate2():
 	pag.typewrite('\t\t\t\t\t\n', interval=0.005)
 	waitSubmit()
 	pag.scroll(20)
+
+def calibrate3():
+	'''Calibrates the coordinate for AktivitasUmum button.'''
+	global tabButtonx, tabButtony
+
+	# preparation
+	button1Check()
+	pag.scroll(scrollValue // 2)
+	tsleep(scrollDelay)
+
+	buttonLoc = pag.locateOnScreen(aktivitasUmumPath)
+	print(buttonLoc)
+	'''1373, 594 -> 1400, aktUmumOffsety00'''
+	if buttonLoc == None:
+		print('Calibration UNSUCCESSFUL: tab button not found.')
+	elif tabButtonx == buttonLoc[0] + aktUmumOffsetx and tabButtony == buttonLoc[1] + aktUmumOffsety:
+		print('Calibration Successful: Tab button is already correct!')
+	else:
+		print('OLD =', tabButtonx, tabButtony)
+
+		tabButtonx = buttonLoc[0] + aktUmumOffsetx
+		tabButtony = buttonLoc[1] + aktUmumOffsety
+
+		print('NEW =', tabButtonx, tabButtony)
+		print('Calibration Successful!')
+
+	pag.scroll(20)
+	tsleep(scrollDelay)
+
+def calibrate4():
+	'''Calibrates the coordinate for tambahLaporan button.'''
+	global button2x, button2y
+
+	# preparation
+	button1Check()
+	pag.scroll(scrollValue // 2)
+	tsleep(scrollDelay)
+	pag.click(tabButtonx, tabButtony)
+	checkPixel(tabButtonx, tabButtony, 220)
+
+	buttonLoc = pag.locateOnScreen(tambahLaporanPath)
+	print(button2x, button2y)
+	print(buttonLoc)
+
+	if buttonLoc == None:
+		print('Calibration UNSUCCESSFUL: tab button not found.')
+	elif button2x == buttonLoc[0] + tamLapOffsetx and button2y == buttonLoc[1] + tamLapOffsety:
+		print('Calibration Successful: Tab button is already correct!')
+	else:
+		print('OLD =', button2x, button2y)
+
+		button2x = buttonLoc[0] + tamLapOffsetx
+		button2y = buttonLoc[1] + tamLapOffsety
+
+		print('NEW =', button2x, button2y)
+		print('Calibration Successful!')
+
+	pag.click(tabButtonx - 130, tabButtony + 240)
+	checkPixel(tabButtonx - 130, tabButtony + 240, 220)
+	pag.scroll(20)
+	tsleep(scrollDelay)
 
 def mengetes():
 	'''change the value of testVar everytime it's called
@@ -212,33 +287,23 @@ def checkPixel(x, y, color):
 		while pag.screenshot(region=(x, y, 1, 1)).getpixel((0, 0))[0] == color:
 			tsleep(waitDelay)
 	else:
-		print("wrong color")
+		print("WRONG color")
 
 def checkNotPixel(x, y, color):
 	'''Check the pixel color of x and y.'''
-	if type(color) in (tuple, list):
-		while pag.screenshot(region=(x, y, 1, 1)).getpixel((0, 0))[0] not in color:
-			tsleep(waitDelay)
-	elif type(color) == int:
-		while pag.screenshot(region=(x, y, 1, 1)).getpixel((0, 0))[0] != color:
-			tsleep(waitDelay)
-	else:
-		print("wrong color")
+	while pag.screenshot(region=(x, y, 1, 1)).getpixel((0, 0))[0] != color:
+		tsleep(waitDelay)
 
 def isiSenam():
 	'''Input 'senam' activity in 'Aktifitas Umum'.'''
-	tabButtonx = 1400
-	tabButtony = 600
-	button2x = 1800
-	button2y = 920
-
+	# click 'Aktivitas Umum'
 	button1Check()
 	pag.scroll(scrollValue // 2)
 	tsleep(scrollDelay)
-	pag.click(tabButtonx, tabButtony) # click aktivitas umum
+	pag.click(tabButtonx, tabButtony)
+	checkPixel(tabButtonx, tabButtony, 220)
 
-	# check until 'Tambah Laporan' can be clicked
-	checkPixel(tabButtonx - 50, tabButtony, 220)
+	# click 'Tambahkan Laporan'
 	pag.click(button2x, button2y)
 	checkPixel(button2x, button2y, (26, 28))
 
@@ -248,18 +313,14 @@ def isiSenam():
 	pag.typewrite("mengikuti senam\n\t07:30\t08:30\t\tSenam pagi karyawan RSUD Jagakarsa"
 			+ submit())
 
-	# check until submit button is gone
+	# check until can go back to 'Aktivitas Utama'
 	checkPixel(1340, 1040, (26, 28))
-	print("first check done")
-	if not testVar:
+	if not testVar: # check the first green icon on the right
 		for x in range(0, 10):
 			if pag.screenshot(region=(1800, 961, 1, 1)).getpixel((0, 0))[0] == 26:
 				break
 			tsleep(waitDelay)
 			print("check {}".format(x))
-#	if not testVar:
-#		checkNotPixel(1800, 961, 26)
-	print("second check done")
 
 	# go back to 'Aktivitas Utama'
 	tombolUtama = (tabButtonx - 130,)
