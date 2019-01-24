@@ -11,8 +11,8 @@ testPause = 0
 testVar = False
 waitDelay = 0.001
 
-scrollS = 20 # scroll value
-scrollD = 0.24 # delay after scolling
+scrollValue = 20 # scroll value
+scrollDelay = 0.24 # delay after scolling
 
 #   coodinates for every 'laporkan' button that should be 1 pixel above
 # the border between the bottom line of the button and the background
@@ -55,7 +55,7 @@ def checkKinerja():
 	windowFind = pag.locate(windowNamePath, topRegion)
 
 	if windowFind == windowLocation:
-		print('Link location is correct.')
+		print('Window location is correct.')
 		return True
 	elif windowFind == None:
 		print('window CANNOT be found!')
@@ -99,9 +99,10 @@ def calibrate2():
 	# preparation
 	button1Check()
 	pag.click(button1x, button1y[3])
-	while pag.screenshot(region=(button1x, button1y[3], 1, 1)).getpixel(
-			(0, 0))[0] in (26, 28):
-		tsleep(waitDelay)
+	checkPixel(button1x, button1y[3], (26, 28))
+#	while pag.screenshot(region=(button1x, button1y[3], 1, 1)).getpixel(
+#			(0, 0))[0] in (26, 28):
+#		tsleep(waitDelay)
 
 	clockLoc = pag.locateOnScreen(clockButtonPath)
 
@@ -142,11 +143,11 @@ def scrollPrep():
 	'''To readjust before clicking 'laporkan'.'''
 
 	pag.moveTo(1750, button1y[2])
-	pag.scroll(scrollS)
-	pag.scroll(scrollS)
-	tsleep(scrollD)
-	pag.scroll(- scrollS)
-	tsleep(scrollD)
+	pag.scroll(scrollValue)
+	pag.scroll(scrollValue)
+	tsleep(scrollDelay)
+	pag.scroll(-scrollValue)
+	tsleep(scrollDelay)
 
 def button1Check():
 	'''Check if the first 'laporkan' button is correct.
@@ -171,9 +172,10 @@ def button1Check():
 
 def waitClockInput(button):
 	'''Wait until we can click on 'Jam Mulai'.'''
-	while pag.screenshot(region=(button1x, button1y[button], 1, 1)).getpixel(
-			(0, 0))[0] in (26, 28):
-		tsleep(waitDelay)
+	checkPixel(button1x, button1y[button], (26, 28))
+#	while pag.screenshot(region=(button1x, button1y[button], 1, 1)).getpixel(
+#			(0, 0))[0] in (26, 28):
+#		tsleep(waitDelay)
 
 	# wait until we can input the time
 	while pag.screenshot(region=(blueEdgex, blueEdgey, 1, 1)
@@ -194,9 +196,10 @@ def waitSubmit():
 	'''Wait after you clicked 'Simpan' or 'Batal'.
 	It checks the simpan button until it isn't blue.
 	'''
-	while pag.screenshot(region=(1375, 1000, 1, 1)).getpixel((0, 0))[0] in \
-			(26, 28):
-		tsleep(0.03125)
+	checkPixel(1375, 1000, (26, 28))
+#	while pag.screenshot(region=(1375, 1000, 1, 1)).getpixel((0, 0))[0] in \
+#			(26, 28):
+#		tsleep(waitDelay)
 
 def submit():
 	'''Clicks 'Simpan' if testVar is false
@@ -208,6 +211,31 @@ def submit():
 	if testVar == False:
 		return '\t\n'
 	return '\t\t\n'
+
+def checkPixel(x, y, color):
+	if type(color) in (tuple, list):
+		while pag.screenshot(region=(x, y, 1, 1)).getpixel((0, 0))[0] in color:
+			tsleep(waitDelay)
+	elif type(color) == int:
+		while pag.screenshot(region=(x, y, 1, 1)).getpixel((0, 0))[0] == color:
+			tsleep(waitDelay)
+	else:
+		print("wrong type of color")
+
+def isiSenam():
+	'''Input 'senam' activity in 'Aktifitas Umum'.'''
+	tabButtonx = 1400
+	tabButtony = 600
+#	button2x = 
+#	button2y = 
+
+	button1Check()
+	pag.scroll(scrollValue // 2)
+	tsleep(scrollDelay)
+	pag.click(tabButtonx, tabButtony) # click aktivitas umum
+
+	# check untul 'Tambah Laporan' can be clicked
+	checkPixel(tabButtonx - 50, tabButtony, 255)
 
 def tindak(tindakan, tOpt):
 	'''Inputs 'Melakukan tindakan / terapi pengobatan'
