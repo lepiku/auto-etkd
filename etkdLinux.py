@@ -44,7 +44,7 @@ clockOffsetx = 7
 clockOffsety = 129
 aktUmumOffsetx = 27
 aktUmumOffsety = 6
-tamLapOffsetx = 37
+tamLapOffsetx = 26
 tamLapOffsety = 10
 
 blueEdgex = 1375
@@ -145,8 +145,7 @@ def calibrate3():
 	tsleep(scrollDelay)
 
 	buttonLoc = pag.locateOnScreen(aktivitasUmumPath)
-	print(buttonLoc)
-	'''1373, 594 -> 1400, aktUmumOffsety00'''
+
 	if buttonLoc == None:
 		print('Calibration UNSUCCESSFUL: tab button not found.')
 	elif tabButtonx == buttonLoc[0] + aktUmumOffsetx and tabButtony == buttonLoc[1] + aktUmumOffsety:
@@ -175,13 +174,11 @@ def calibrate4():
 	checkPixel(tabButtonx, tabButtony, 220)
 
 	buttonLoc = pag.locateOnScreen(tambahLaporanPath)
-	print(button2x, button2y)
-	print(buttonLoc)
 
 	if buttonLoc == None:
-		print('Calibration UNSUCCESSFUL: tab button not found.')
+		print('Calibration UNSUCCESSFUL: tambah laporan  button not found.')
 	elif button2x == buttonLoc[0] + tamLapOffsetx and button2y == buttonLoc[1] + tamLapOffsety:
-		print('Calibration Successful: Tab button is already correct!')
+		print('Calibration Successful: Tambah Laporan button is already correct!')
 	else:
 		print('OLD =', button2x, button2y)
 
@@ -314,13 +311,12 @@ def isiSenam():
 			+ submit())
 
 	# check until can go back to 'Aktivitas Utama'
-	checkPixel(1340, 1040, (26, 28))
+	checkPixel(tabButtonx - 60, tabButtony + 440, (26, 28))
 	if not testVar: # check the first green icon on the right
 		for x in range(0, 10):
-			if pag.screenshot(region=(1800, 961, 1, 1)).getpixel((0, 0))[0] == 26:
+			if pag.screenshot(region=(button2x, button2y + 41, 1, 1)).getpixel((0, 0))[0] == 26:
 				break
 			tsleep(waitDelay)
-			print("check {}".format(x))
 
 	# go back to 'Aktivitas Utama'
 	tombolUtama = (tabButtonx - 130,)
@@ -465,7 +461,7 @@ def normal():
 def senam():
 	'''Untuk hari rabu saat ada senam.'''
 	isiSenam()
-	meTindak()
+	seTindak()
 	meRujuk()
 	meKocam()
 def sabtu():
