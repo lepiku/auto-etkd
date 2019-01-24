@@ -104,18 +104,34 @@ class Frame(tk.Frame):
 
 			self.master.after(250, self.gM)
 
+	def calibAll(self):
+		'''Calibrate all buttons.'''
+		etkd.calibrate1()
+		etkd.calibrate2()
+		etkd.calibrate3()
+		etkd.calibrate4()
+
 	def calibrate(self):
 		'''Make new window for calibration options.'''
 		calib = tk.Tk()
 		calib.title('Calibrate')
 
-		but1 = tk.Button(calib, text='Calibrate\nLaporkan Button',
+		but1 = tk.Button(calib, text='Calibrate\nLaporkan Button', bg='white',
 				command=lambda: self.dest(calib, etkd.calibrate1))
-		but2 = tk.Button(calib, text='Calibrate\nClock Button',
+		but2 = tk.Button(calib, text='Calibrate\nClock Button', bg='white',
 				command=lambda: self.dest(calib, etkd.calibrate2))
+		but3 = tk.Button(calib, text='Calibrate Aktivitas\nUmum Button',
+				command=lambda: self.dest(calib, etkd.calibrate3))
+		but4 = tk.Button(calib, text='Calibrate Tambah\nLaporan Button',
+				command=lambda: self.dest(calib, etkd.calibrate4))
+		butAll = tk.Button(calib, text='Calibrate All Buttons', bg='yellow',
+				command=lambda: self.dest(calib, self.calibAll))
 
-		but1.pack(side='left')
-		but2.pack(side='right')
+		but1.grid(row=0, column=0, sticky='we')
+		but2.grid(row=0, column=1, sticky='we')
+		but3.grid(row=1, column=0, sticky='we')
+		but4.grid(row=1, column=1, sticky='we')
+		butAll.grid(row=3, column=0, columnspan=2,  sticky='we')
 
 		calib.mainloop()
 
@@ -127,7 +143,8 @@ class Frame(tk.Frame):
 					('Senam tindakan', etkd.seTindak),
 					('Dikit tindakan', etkd.diTindak)],
 					[('Normal rujukan', etkd.meRujuk),
-					('Dikit rujukan', etkd.diRujuk)],
+					('Dikit rujukan', etkd.diRujuk),
+					('Isi senam', etkd.isiSenam)],
 					[('Normal kocam', etkd.meKocam),
 					('Sabtu kocam', etkd.saKocam),
 					('Dikit Kocam', etkd.diKocam)]]
@@ -143,8 +160,11 @@ class Frame(tk.Frame):
 
 	def dest(self, window, func):
 		'''Destroy the window after running the function.'''
-		func()
-		window.destroy()
+		try:
+			func()
+			window.destroy()
+		except pag.FailSafeException:
+			print('!!Calibration ABORTED!!')
 
 	# wraps commands with get function and a timer
 	def wrapper(self, get_func, func):
