@@ -156,7 +156,23 @@ class Frame(tk.Frame):
 								self.wrapper(self.get1, c))
 				button.grid(row=y, column=x, sticky='we')
 
+		l_pause = tk.Label(opts, text="realPause/testPause")
+		e_realPause = tk.Entry(opts, width=10)
+		e_testPause = tk.Entry(opts, width=10)
+
+		l_pause.grid(row=3, column=0, sticky='news')
+		self.opts_realPause.grid(row=3, column=1, sticky='news')
+		self.opts_realPause.insert('end', etkd.realPause)
+		self.opts_testPause.grid(row=3, column=2, sticky='news')
+		self.opts_testPause.insert('end', etkd.testPause)
+
+		b_save = tk.Button(opts, text='Save', command=self.saveOptions)
+		b.grid(row=4, column=2)
+
 		opts.mainloop()
+
+	def saveOptions(self, opts):
+		etkd.realPause = opts
 
 	def dest(self, window, func):
 		'''Destroy the window after running the function.'''
