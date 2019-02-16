@@ -10,13 +10,14 @@ else
     if [ -f "/home/dimas/Programs/anaconda3/etc/profile.d/conda.sh" ]; then
         . "/home/dimas/Programs/anaconda3/etc/profile.d/conda.sh"
 ##        CONDA_CHANGEPS1=false
-        conda activate std
+        conda activate base
     else
         \export PATH="/home/dimas/Programs/anaconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
 # <<< conda init <<<
+conda activate std
 
 python3 ~/Dropbox/Python/auto-etkd/etkdbkd.py
 
