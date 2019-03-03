@@ -50,14 +50,17 @@ class Frame(tk.Frame):
 		# buttons
 		b_normal = tk.Button(self, text='Normal', font=self.fonts[0], bg='yellow',
 				command=lambda : self.wrapper(self.get, etkd.normal))
+		b_senin = tk.Button(self, text='Senin', font=self.fonts[0], bg='yellow',
+				command=lambda : self.wrapper(self.get, etkd.senin))
 		b_senam = tk.Button(self, text='Senam', font=self.fonts[0], bg='yellow',
 				command=lambda : self.wrapper(self.get, etkd.senam))
-		b_sabtu = tk.Button(self, text='Sabtu', font=self.fonts[0], bg='yellow',
-				command=lambda : self.wrapper(self.get, etkd.sabtu))
+		#b_sabtu = tk.Button(self, text='Sabtu', font=self.fonts[0], bg='yellow',
+		#		command=lambda : self.wrapper(self.get, etkd.sabtu))
 
 		b_normal.grid(row=3, column=0, sticky='we')
-		b_senam.grid(row=3, column=1, sticky='we')
-		b_sabtu.grid(row=3, column=2, sticky='we')
+		b_senin.grid(row=3, column=1, sticky='we')
+		b_senam.grid(row=3, column=2, sticky='we')
+		#b_sabtu.grid(row=3, column=2, sticky='we')
 
 		# progress bar
 		self.l_progress = tk.Label(self, font=self.fonts[0], bg='green')

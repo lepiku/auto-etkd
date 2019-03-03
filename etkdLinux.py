@@ -7,7 +7,7 @@ from time import sleep as tsleep
 
 # setting variables and delays, sometimes different for every OS
 realPause = 0
-testPause = 0
+testPause = 0.2
 testVar = False
 waitDelay = 0.001
 
@@ -318,16 +318,59 @@ def isiSenam():
 				break
 			tsleep(waitDelay)
 
-	# go back to 'Aktivitas Utama'
+	# set the location of 'Aktivitas Utama' button
 	tombolUtama = (tabButtonx - 130,)
 	if testVar:
 		tombolUtama += (tabButtony + 240,)
 	else:
 		tombolUtama += (tabButtony + 195,)
-	pag.click(tombolUtama[0], tombolUtama[1])
-	checkNotPixel(tombolUtama[0], tombolUtama[1], 220)
 
-	print('Finished Senam')
+	# go back to 'Aktivitas Utama'
+	if pag.screenshot(region=(tombolUtama[0], tombolUtama[1], 1, 1)).getpixel((0, 0))[0] == 220:
+		pag.click(tombolUtama[0], tombolUtama[1])
+
+	checkPixel(tombolUtama[0], tombolUtama[1], 220)
+
+def isiApel():
+	# click 'Aktivitas Umum'
+	button1Check()
+	pag.scroll(scrollValue // 2)
+	tsleep(scrollDelay)
+	pag.click(tabButtonx, tabButtony)
+	checkPixel(tabButtonx, tabButtony, 220)
+
+	# click 'Tambahkan Laporan'
+	pag.click(button2x, button2y)
+	checkPixel(button2x, button2y, (26, 28))
+
+	# check until the data can be inputed
+	checkNotPixel(button2x - 280, button2y + 50, 246)
+	pag.click(button2x - 280, button2y + 50)
+	pag.typewrite("apel -\n\t07:30\t08:00\t\tMengikuti apel pagi RSUD Jagakarsa"
+			+ submit())
+
+	# check until can go back to 'Aktivitas Utama'
+	checkPixel(tabButtonx - 60, tabButtony + 440, (26, 28))
+	if not testVar: # check the first green icon on the right
+		for x in range(0, 10):
+			if pag.screenshot(region=(button2x, button2y + 41, 1, 1)).getpixel((0, 0))[0] == 26:
+				break
+			tsleep(waitDelay)
+
+	# set the location of 'Aktivitas Utama' button
+	tombolUtama = (tabButtonx - 130,)
+	if testVar:
+		tombolUtama += (tabButtony + 240,)
+	else:
+		tombolUtama += (tabButtony + 195,)
+
+	# go back to 'Aktivitas Utama'
+	if pag.screenshot(region=(tombolUtama[0], tombolUtama[1], 1, 1)).getpixel((0, 0))[0] == 220:
+		pag.click(tombolUtama[0], tombolUtama[1])
+
+	checkPixel(tombolUtama[0], tombolUtama[1], 220)
+
+	print('Finished Apel')
 
 def tindak(tindakan, tOpt):
 	'''Inputs 'Melakukan tindakan / terapi pengobatan'
@@ -427,6 +470,10 @@ def diTindak():
 	'''Only a few 'tindakan'.'''
 	tOpt = ['07:30', '09:00', '10:30']
 	tindak(j_tindak, tOpt)
+def apTindak():
+	'''When there's a ceremony.'''
+	tOpt = ['08:00', '09:00', '10:30']
+	tindak(j_tindak, tOpt)
 
 # Saved 'rujukan' preset
 def meRujuk():
@@ -471,6 +518,11 @@ def sabtu():
 def dikit():
 	'''Untuk hari biasa saat pasien sedikit.'''
 	meTindak()
+	meRujuk()
+	meKocam()
+def senin():
+	isiApel()
+	apTindak()
 	meRujuk()
 	meKocam()
 
