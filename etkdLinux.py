@@ -276,7 +276,7 @@ def submit():
 	return '\t\t\n'
 
 def checkPixel(x, y, color):
-	'''Check the pixel color of x and y.'''
+	'''Check the pixel color of x and y until the red color is different.'''
 	if type(color) in (tuple, list):
 		while pag.screenshot(region=(x, y, 1, 1)).getpixel((0, 0))[0] in color:
 			tsleep(waitDelay)
@@ -287,12 +287,12 @@ def checkPixel(x, y, color):
 		print("WRONG color")
 
 def checkNotPixel(x, y, color):
-	'''Check the pixel color of x and y.'''
+	'''Check the pixel color of x and y until the red color is the same.'''
 	while pag.screenshot(region=(x, y, 1, 1)).getpixel((0, 0))[0] != color:
 		tsleep(waitDelay)
 
-def isiSenam():
-	'''Input 'senam' activity in 'Aktifitas Umum'.'''
+def isiUmum(search, timeStart, timeEnd, info):
+	'''Input an activity in 'Aktivitas Umum.'''
 	# click 'Aktivitas Umum'
 	button1Check()
 	pag.scroll(scrollValue // 2)
@@ -307,7 +307,7 @@ def isiSenam():
 	# check until the data can be inputed
 	checkNotPixel(button2x - 280, button2y + 50, 246)
 	pag.click(button2x - 280, button2y + 50)
-	pag.typewrite("mengikuti senam\n\t07:30\t08:30\t\tSenam pagi karyawan RSUD Jagakarsa"
+	pag.typewrite(search + "\n\t" + timeStart + "\t" + timeEnd + "\t\t" + info
 			+ submit())
 
 	# check until can go back to 'Aktivitas Utama'
@@ -330,47 +330,6 @@ def isiSenam():
 		pag.click(tombolUtama[0], tombolUtama[1])
 
 	checkPixel(tombolUtama[0], tombolUtama[1], 220)
-
-def isiApel():
-	# click 'Aktivitas Umum'
-	button1Check()
-	pag.scroll(scrollValue // 2)
-	tsleep(scrollDelay)
-	pag.click(tabButtonx, tabButtony)
-	checkPixel(tabButtonx, tabButtony, 220)
-
-	# click 'Tambahkan Laporan'
-	pag.click(button2x, button2y)
-	checkPixel(button2x, button2y, (26, 28))
-
-	# check until the data can be inputed
-	checkNotPixel(button2x - 280, button2y + 50, 246)
-	pag.click(button2x - 280, button2y + 50)
-	pag.typewrite("apel -\n\t07:30\t08:00\t\tMengikuti apel pagi RSUD Jagakarsa"
-			+ submit())
-
-	# check until can go back to 'Aktivitas Utama'
-	checkPixel(tabButtonx - 60, tabButtony + 440, (26, 28))
-	if not testVar: # check the first green icon on the right
-		for x in range(0, 10):
-			if pag.screenshot(region=(button2x, button2y + 41, 1, 1)).getpixel((0, 0))[0] == 26:
-				break
-			tsleep(waitDelay)
-
-	# set the location of 'Aktivitas Utama' button
-	tombolUtama = (tabButtonx - 130,)
-	if testVar:
-		tombolUtama += (tabButtony + 240,)
-	else:
-		tombolUtama += (tabButtony + 195,)
-
-	# go back to 'Aktivitas Utama'
-	if pag.screenshot(region=(tombolUtama[0], tombolUtama[1], 1, 1)).getpixel((0, 0))[0] == 220:
-		pag.click(tombolUtama[0], tombolUtama[1])
-
-	checkPixel(tombolUtama[0], tombolUtama[1], 220)
-
-	print('Finished Apel')
 
 def tindak(tindakan, tOpt):
 	'''Inputs 'Melakukan tindakan / terapi pengobatan'
@@ -457,6 +416,15 @@ def kocam(pasien, tOpt):
 	print('Finished Konsultasi and Catatan Medik')
 	pag.scroll(20)
 
+# Saved 'isiUmum' preset
+def isiSenam():
+	'''Input 'senam' activity in 'Aktifitas Umum'.'''
+	isiUmum("mengikuti senam", "07:00", "08:00", "Senam pagi karyawan RSUD Jagakarsa")
+
+def isiApel():
+	'''Input 'Menjadi petugas Apel' activity in 'Aktifitas Umum'.'''
+	isiUmum("apel -", "07:30", "08:00", "Mengikuti apel pagi RSUD Jagakarsa")
+
 # Saved 'tindakan' preset
 def meTindak():
 	'''Normal 'tindakan'.'''
@@ -464,7 +432,7 @@ def meTindak():
 	tindak(j_tindak, tOpt)
 def seTindak():
 	'''Senam 'tindakan'.'''
-	tOpt = ['08:30', '10:00', '11:00', '12:00']
+	tOpt = ['08:00', '09:00', '10:30', '12:00']
 	tindak(j_tindak, tOpt)
 def diTindak():
 	'''Only a few 'tindakan'.'''
@@ -472,7 +440,7 @@ def diTindak():
 	tindak(j_tindak, tOpt)
 def apTindak():
 	'''When there's a ceremony.'''
-	tOpt = ['08:00', '09:00', '10:30']
+	tOpt = ['08:00', '09:00', '10:30', '12:00']
 	tindak(j_tindak, tOpt)
 
 # Saved 'rujukan' preset

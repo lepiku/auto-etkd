@@ -16,7 +16,7 @@ class Frame(tk.Frame):
 		self.getMouse = False
 
 		# check if the website is opened
-		for x in range(10):
+		for x in range(5):
 			if etkd.checkKinerja():
 				break
 			tsleep(1)
@@ -139,6 +139,7 @@ class Frame(tk.Frame):
 		calib.mainloop()
 
 	def options(self):
+		'''Options menu, for other options and settings.'''
 		opts = tk.Tk()
 		opts.title('auto-etkd Options')
 
@@ -160,22 +161,26 @@ class Frame(tk.Frame):
 				button.grid(row=y, column=x, sticky='we')
 
 		l_pause = tk.Label(opts, text="realPause/testPause")
-		e_realPause = tk.Entry(opts, width=10)
-		e_testPause = tk.Entry(opts, width=10)
+		self.e_realPause = tk.Entry(opts, width=10)
+		self.e_testPause = tk.Entry(opts, width=10)
 
 		l_pause.grid(row=3, column=0, sticky='news')
-		self.opts_realPause.grid(row=3, column=1, sticky='news')
-		self.opts_realPause.insert('end', etkd.realPause)
-		self.opts_testPause.grid(row=3, column=2, sticky='news')
-		self.opts_testPause.insert('end', etkd.testPause)
+		self.e_realPause.grid(row=3, column=1, sticky='news')
+		self.e_realPause.insert('end', etkd.realPause)
+		self.e_testPause.grid(row=3, column=2, sticky='news')
+		self.e_testPause.insert('end', etkd.testPause)
 
-		b_save = tk.Button(opts, text='Save', command=self.saveOptions)
-		b.grid(row=4, column=2)
+		b_save = tk.Button(opts, text='Save', command=self.saveOptions,
+				bg='yellow')
+		b_save.grid(row=4, column=2, sticky='news')
 
 		opts.mainloop()
 
-	def saveOptions(self, opts):
-		etkd.realPause = opts
+	def saveOptions(self):
+		'''To save option.'''
+		etkd.realPause = float(self.e_realPause.get())
+		etkd.testPause = float(self.e_testPause.get())
+		print("the settings have been saved")
 
 	def dest(self, window, func):
 		'''Destroy the window after running the function.'''
