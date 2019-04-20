@@ -109,10 +109,10 @@ class Frame(tk.Frame):
 
 	def calibAll(self):
 		'''Calibrate all buttons.'''
-		etkd.calibrate1()
-		etkd.calibrate2()
-		etkd.calibrate3()
-		etkd.calibrate4()
+		if etkd.calibrate1():
+			etkd.calibrate2()
+			etkd.calibrate3()
+			etkd.calibrate4()
 
 	def calibrate(self):
 		'''Make new window for calibration options.'''

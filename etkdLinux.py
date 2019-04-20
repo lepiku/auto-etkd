@@ -91,7 +91,9 @@ def calibrate1():
 
 	if butLoc == None:
 		print('Calibration UNSUCCESSFUL: button not found.')
-	elif button1y[0] == butLoc[1] + lapOffsety:
+		return False
+	elif button1x == butLoc[0] + lapOffsetx and \
+			button1y[0] == butLoc[1] + lapOffsety:
 		print('Calibration Successful: Button1s are already correct!')
 	else:
 		print('OLD =', button1x, button1y)
@@ -105,6 +107,7 @@ def calibrate1():
 		print('Calibration Successful: Button1s are calibrated!')
 
 	pag.scroll(20)
+	return True
 
 def calibrate2():
 	'''Calibrates the coordinate for waitClockInput button.'''
@@ -119,7 +122,8 @@ def calibrate2():
 
 	if clockLoc == None:
 		print('Calibration UNSUCCESSFUL: button not found.')
-	elif blueEdgey == clockLoc[1] + clockOffsety:
+	elif blueEdgex == clockLoc[1] + clockOffsetx and \
+			blueEdgey == clockLoc[0] + clockOffsety:
 		print('Calibration Successful: Clock Buttons are already correct!')
 	else:
 		print('OLD =', blueEdgex, blueEdgey)
@@ -148,7 +152,8 @@ def calibrate3():
 
 	if buttonLoc == None:
 		print('Calibration UNSUCCESSFUL: tab button not found.')
-	elif tabButtonx == buttonLoc[0] + aktUmumOffsetx and tabButtony == buttonLoc[1] + aktUmumOffsety:
+	elif tabButtonx == buttonLoc[0] + aktUmumOffsetx and \
+			tabButtony == buttonLoc[1] + aktUmumOffsety:
 		print('Calibration Successful: Tab button is already correct!')
 	else:
 		print('OLD =', tabButtonx, tabButtony)
@@ -177,7 +182,8 @@ def calibrate4():
 
 	if buttonLoc == None:
 		print('Calibration UNSUCCESSFUL: tambah laporan  button not found.')
-	elif button2x == buttonLoc[0] + tamLapOffsetx and button2y == buttonLoc[1] + tamLapOffsety:
+	elif button2x == buttonLoc[0] + tamLapOffsetx and \
+			button2y == buttonLoc[1] + tamLapOffsety:
 		print('Calibration Successful: Tambah Laporan button is already correct!')
 	else:
 		print('OLD =', button2x, button2y)
@@ -475,7 +481,7 @@ def normal():
 	meKocam()
 def senam():
 	'''Untuk hari rabu saat ada senam.'''
-	isiSenam()
+	# isiSenam()
 	seTindak()
 	meRujuk()
 	meKocam()
@@ -489,7 +495,7 @@ def dikit():
 	meRujuk()
 	meKocam()
 def senin():
-	isiApel()
+	# isiApel()
 	apTindak()
 	meRujuk()
 	meKocam()
