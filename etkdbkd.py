@@ -16,7 +16,7 @@ class Frame(tk.Frame):
 		self.getMouse = False
 
 		# check if the website is opened
-		for x in range(5):
+		for x in range(1):
 			if etkd.checkKinerja():
 				break
 			tsleep(1)
@@ -27,6 +27,8 @@ class Frame(tk.Frame):
 	def create_widgets(self):
 		'''Create the widgets.'''
 		# labels
+		l_masuk = tk.Label(self, text='Masuk(hhmm) :', anchor='e', pady=5,
+				font=self.fonts[0])
 		l_tindak = tk.Label(self, text='Tindakan :', anchor='e', pady=5,
 				font=self.fonts[0])
 		l_rujuk = tk.Label(self, text='Rujukan :', anchor='e', pady=5,
@@ -34,18 +36,21 @@ class Frame(tk.Frame):
 		l_pasien = tk.Label(self, text='Pasien :', anchor='e', pady=5,
 				font=self.fonts[0])
 
-		l_tindak.grid(row=0, column=0, sticky='we')
-		l_rujuk.grid(row=1, column=0, sticky='we')
-		l_pasien.grid(row=2, column=0, sticky='we')
+		l_masuk.grid(row=0, column=0, sticky='we')
+		l_tindak.grid(row=1, column=0, sticky='we')
+		l_rujuk.grid(row=2, column=0, sticky='we')
+		l_pasien.grid(row=3, column=0, sticky='we')
 
 		# entries
+		self.e_masuk = tk.Entry(self, font=self.fonts[0])
 		self.e_tindak = tk.Entry(self, font=self.fonts[0])
 		self.e_rujuk = tk.Entry(self, font=self.fonts[0])
 		self.e_pasien = tk.Entry(self, font=self.fonts[0])
 
-		self.e_tindak.grid(row=0, column=1, columns=2)
-		self.e_rujuk.grid(row=1, column=1, columns=2)
-		self.e_pasien.grid(row=2, column=1, columns=2)
+		self.e_masuk.grid(row=0, column=1, columns=2)
+		self.e_tindak.grid(row=1, column=1, columns=2)
+		self.e_rujuk.grid(row=2, column=1, columns=2)
+		self.e_pasien.grid(row=3, column=1, columns=2)
 
 		# buttons
 		b_normal = tk.Button(self, text='Normal', font=self.fonts[0], bg='yellow',
@@ -57,14 +62,14 @@ class Frame(tk.Frame):
 		#b_sabtu = tk.Button(self, text='Sabtu', font=self.fonts[0], bg='yellow',
 		#		command=lambda : self.wrapper(self.get, etkd.sabtu))
 
-		b_normal.grid(row=3, column=0, sticky='we')
-		b_senin.grid(row=3, column=1, sticky='we')
-		b_senam.grid(row=3, column=2, sticky='we')
+		b_normal.grid(row=4, column=0, sticky='we')
+		b_senin.grid(row=4, column=1, sticky='we')
+		b_senam.grid(row=4, column=2, sticky='we')
 		#b_sabtu.grid(row=3, column=2, sticky='we')
 
 		# progress bar
 		self.l_progress = tk.Label(self, font=self.fonts[0], bg='green')
-		self.l_progress.grid(row=4, column=0, columnspan=4, sticky='we')
+		self.l_progress.grid(row=5, column=0, columnspan=4, sticky='we')
 
 		# other buttons
 		b_mouse = tk.Checkbutton(self, text='Cek Mouse', font=self.fonts[0],
@@ -83,6 +88,7 @@ class Frame(tk.Frame):
 
 	def delete(self):
 		'''Delete all entries.'''
+		self.e_masuk.delete(0, 'end')
 		self.e_tindak.delete(0, 'end')
 		self.e_rujuk.delete(0, 'end')
 		self.e_pasien.delete(0, 'end')
@@ -157,7 +163,7 @@ class Frame(tk.Frame):
 			for y in range(len(preset[x])):
 				button = tk.Button(opts, text=preset[x][y][0],
 						command=lambda c=preset[x][y][1]:
-								self.wrapper(self.get1, c))
+								self.wrapper(self.getOptions, c))
 				button.grid(row=y, column=x, sticky='we')
 
 		l_pause = tk.Label(opts, text="realPause/testPause")
@@ -220,20 +226,27 @@ class Frame(tk.Frame):
 
 	def get(self, func):
 		'''Get from all entries.'''
+		etkd.j_masuk = self.e_masuk.get()
 		etkd.j_tindak = int(self.e_tindak.get())
 		etkd.j_pasien = int(self.e_pasien.get())
 
 		# if on saturday, dont check rujukan
-		if func == etkd.sabtu:
-			etkd.j_rujuk = 0
-		else:
-			etkd.j_rujuk = int(self.e_rujuk.get())
+		# if func == etkd.sabtu:
+		#     etkd.j_rujuk = 0
+		# else:
+		#     etkd.j_rujuk = int(self.e_rujuk.get())
+		etkd.j_rujuk = int(self.e_rujuk.get())
+
+		# check if j_masuk is empty or a clock
+		if not (etkd.j_masuk == "" \
+				or (len(etkd.j_masuk) == 4 and etkd.j_masuk.isdigit())):
+			raise ValueError
 
 		# if the numbers is too big
 		if etkd.j_tindak + etkd.j_rujuk + etkd.j_pasien > 100:
 			raise ValueError
 
-	def get1(self, func):
+	def getOptions(self, func):
 		if func in [etkd.meTindak, etkd.seTindak, etkd.diTindak]:
 			etkd.j_tindak = int(self.e_tindak.get())
 

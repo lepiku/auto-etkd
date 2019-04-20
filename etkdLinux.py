@@ -53,6 +53,7 @@ blueEdgey = 683
 # failsafe and settings
 pag.PAUSE = 0
 pag.FAILSAFE = True
+j_masuk = ""
 j_tindak = 0
 j_rujuk = 0
 j_pasien = 0
@@ -92,8 +93,8 @@ def calibrate1():
 	if butLoc == None:
 		print('Calibration UNSUCCESSFUL: button not found.')
 		return False
-	elif button1x == butLoc[0] + lapOffsetx and \
-			button1y[0] == butLoc[1] + lapOffsety:
+	elif button1x == butLoc[0] + lapOffsetx \
+			and button1y[0] == butLoc[1] + lapOffsety:
 		print('Calibration Successful: Button1s are already correct!')
 	else:
 		print('OLD =', button1x, button1y)
@@ -122,8 +123,8 @@ def calibrate2():
 
 	if clockLoc == None:
 		print('Calibration UNSUCCESSFUL: button not found.')
-	elif blueEdgex == clockLoc[1] + clockOffsetx and \
-			blueEdgey == clockLoc[0] + clockOffsety:
+	elif blueEdgex == clockLoc[1] + clockOffsetx \
+			and blueEdgey == clockLoc[0] + clockOffsety:
 		print('Calibration Successful: Clock Buttons are already correct!')
 	else:
 		print('OLD =', blueEdgex, blueEdgey)
@@ -152,8 +153,8 @@ def calibrate3():
 
 	if buttonLoc == None:
 		print('Calibration UNSUCCESSFUL: tab button not found.')
-	elif tabButtonx == buttonLoc[0] + aktUmumOffsetx and \
-			tabButtony == buttonLoc[1] + aktUmumOffsety:
+	elif tabButtonx == buttonLoc[0] + aktUmumOffsetx \
+			and tabButtony == buttonLoc[1] + aktUmumOffsety:
 		print('Calibration Successful: Tab button is already correct!')
 	else:
 		print('OLD =', tabButtonx, tabButtony)
@@ -182,8 +183,8 @@ def calibrate4():
 
 	if buttonLoc == None:
 		print('Calibration UNSUCCESSFUL: tambah laporan  button not found.')
-	elif button2x == buttonLoc[0] + tamLapOffsetx and \
-			button2y == buttonLoc[1] + tamLapOffsety:
+	elif button2x == buttonLoc[0] + tamLapOffsetx \
+			and button2y == buttonLoc[1] + tamLapOffsety:
 		print('Calibration Successful: Tambah Laporan button is already correct!')
 	else:
 		print('OLD =', button2x, button2y)
@@ -422,6 +423,10 @@ def kocam(pasien, tOpt):
 	print('Finished Konsultasi and Catatan Medik')
 	pag.scroll(20)
 
+def formatClock(clock):
+	clock = clock.replace(":", "")
+	return clock[0:2] + ":" + clock[2:4]
+
 # Saved 'isiUmum' preset
 def isiSenam():
 	'''Input 'senam' activity in 'Aktifitas Umum'.'''
@@ -435,43 +440,37 @@ def isiApel():
 def meTindak():
 	'''Normal 'tindakan'.'''
 	tOpt = ['07:30', '09:00', '10:30', '12:00']
+	if j_masuk:
+		tOpt[0] = formatClock(j_masuk)
 	tindak(j_tindak, tOpt)
 def seTindak():
 	'''Senam 'tindakan'.'''
-	tOpt = ['08:00', '09:00', '10:30', '12:00']
-	tindak(j_tindak, tOpt)
+	tindak(j_tindak, ['08:00', '09:00', '10:30', '12:00'])
 def diTindak():
 	'''Only a few 'tindakan'.'''
-	tOpt = ['07:30', '09:00', '10:30']
-	tindak(j_tindak, tOpt)
+	tindak(j_tindak, ['07:30', '09:00', '10:30'])
 def apTindak():
 	'''When there's a ceremony.'''
-	tOpt = ['08:00', '09:00', '10:30', '12:00']
-	tindak(j_tindak, tOpt)
+	tindak(j_tindak, ['08:00', '09:00', '10:30', '12:00'])
 
 # Saved 'rujukan' preset
 def meRujuk():
 	'''Normal 'rujukan'.'''
-	tOpt = ['12:00', '12:30']
-	rujuk(j_rujuk, tOpt)
+	rujuk(j_rujuk, ['12:00', '12:30'])
 def diRujuk():
 	'''Only a few 'rujukan'.'''
-	tOpt = ['10:30', '11:00']
-	rujuk(j_rujuk, tOpt)
+	rujuk(j_rujuk, ['10:30', '11:00'])
 
 # Saved 'konsultasi dan catatan medik' preset
 def meKocam():
 	'''Normal 'konsultasi dan catatan medik'.'''
-	tOpt = ['12:30', '13:30', '14:00']
-	kocam(j_pasien, tOpt)
+	kocam(j_pasien, ['12:30', '13:30', '14:00'])
 def saKocam():
 	'''Saturday 'konsultasi dan catatan medik'.'''
-	tOpt = ['12:00', '12:30', '13:00']
-	kocam(j_pasien, tOpt)
+	kocam(j_pasien, ['12:00', '12:30', '13:00'])
 def diKocam():
 	'''Only a few 'konsultasi dan catatan medik'.'''
-	tOpt = ['11:00', '11:30', '12:00']
-	kocam(j_pasien, tOpt)
+	kocam(j_pasien, ['11:00', '11:30', '12:00'])
 
 # Daftar fungsi-fungsi yang bisa dijalankan
 def normal():
