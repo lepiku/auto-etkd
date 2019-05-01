@@ -50,6 +50,16 @@ tamLapOffsety = 10
 blueEdgex = 1375
 blueEdgey = 683
 
+# i3 settings
+button1x = 1825
+button1y = [242, 390, 538, 686, 833]
+blueEdgex = 1362
+blueEdgey = 705
+tabButtonx = 1387
+tabButtony = 596
+button2x = 1783
+button2y = 942
+
 # failsafe and settings
 pag.PAUSE = 0
 pag.FAILSAFE = True
@@ -122,10 +132,10 @@ def calibrate2():
 	clockLoc = pag.locateOnScreen(clockButtonPath)
 
 	if clockLoc == None:
-		print('Calibration UNSUCCESSFUL: button not found.')
-	elif blueEdgex == clockLoc[1] + clockOffsetx \
-			and blueEdgey == clockLoc[0] + clockOffsety:
-		print('Calibration Successful: Clock Buttons are already correct!')
+		print('Calibration UNSUCCESSFUL: Clock button not found.')
+	elif blueEdgex == clockLoc[0] + clockOffsetx \
+			and blueEdgey == clockLoc[1] + clockOffsety:
+		print('Calibration Successful: Clock button is already correct!')
 	else:
 		print('OLD =', blueEdgex, blueEdgey)
 
@@ -133,7 +143,7 @@ def calibrate2():
 		blueEdgey = clockLoc[1] + clockOffsety
 
 		print('NEW =', blueEdgex, blueEdgey)
-		print('Calibration Successful!')
+		print('Calibration Successful! Clock button is calibrated!')
 
 	waitClockInput(3)
 	pag.typewrite('\t\t\t\t\t\n', interval=0.005)
@@ -163,7 +173,7 @@ def calibrate3():
 		tabButtony = buttonLoc[1] + aktUmumOffsety
 
 		print('NEW =', tabButtonx, tabButtony)
-		print('Calibration Successful!')
+		print('Calibration Successful! Tab button is calibrated!')
 
 	pag.scroll(20)
 	tsleep(scrollDelay)
@@ -193,7 +203,7 @@ def calibrate4():
 		button2y = buttonLoc[1] + tamLapOffsety
 
 		print('NEW =', button2x, button2y)
-		print('Calibration Successful!')
+		print('Calibration Successful! Tambah Laporan button is calibrated!')
 
 	pag.click(tabButtonx - 130, tabButtony + 240)
 	checkPixel(tabButtonx - 130, tabButtony + 240, 220)

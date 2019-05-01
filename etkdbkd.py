@@ -16,10 +16,10 @@ class Frame(tk.Frame):
 		self.getMouse = False
 
 		# check if the website is opened
-		for x in range(1):
-			if etkd.checkKinerja():
-				break
-			tsleep(1)
+		# for x in range(10):
+		#     if etkd.checkKinerja():
+		#         break
+		#     tsleep(1)
 
 		# create widgets
 		self.create_widgets()
@@ -119,6 +119,7 @@ class Frame(tk.Frame):
 			etkd.calibrate2()
 			etkd.calibrate3()
 			etkd.calibrate4()
+        print("All calibration complete!")
 
 	def calibrate(self):
 		'''Make new window for calibration options.'''
