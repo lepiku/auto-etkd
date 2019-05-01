@@ -7,7 +7,7 @@ from time import sleep as tsleep
 
 # setting variables and delays, sometimes different for every OS
 realPause = 0
-testPause = 0
+testPause = 0.2
 testVar = False
 waitDelay = 0.001
 
@@ -50,9 +50,20 @@ tamLapOffsety = 10
 blueEdgex = 1375
 blueEdgey = 683
 
+# i3 settings
+button1x = 1825
+button1y = [242, 390, 538, 686, 833]
+blueEdgex = 1362
+blueEdgey = 705
+tabButtonx = 1387
+tabButtony = 596
+button2x = 1783
+button2y = 942
+
 # failsafe and settings
 pag.PAUSE = 0
 pag.FAILSAFE = True
+j_masuk = ""
 j_tindak = 0
 j_rujuk = 0
 j_pasien = 0
@@ -91,7 +102,9 @@ def calibrate1():
 
 	if butLoc == None:
 		print('Calibration UNSUCCESSFUL: button not found.')
-	elif button1y[0] == butLoc[1] + lapOffsety:
+		return False
+	elif button1x == butLoc[0] + lapOffsetx \
+			and button1y[0] == butLoc[1] + lapOffsety:
 		print('Calibration Successful: Button1s are already correct!')
 	else:
 		print('OLD =', button1x, button1y)
@@ -105,6 +118,7 @@ def calibrate1():
 		print('Calibration Successful: Button1s are calibrated!')
 
 	pag.scroll(20)
+	return True
 
 def calibrate2():
 	'''Calibrates the coordinate for waitClockInput button.'''
@@ -118,9 +132,10 @@ def calibrate2():
 	clockLoc = pag.locateOnScreen(clockButtonPath)
 
 	if clockLoc == None:
-		print('Calibration UNSUCCESSFUL: button not found.')
-	elif blueEdgey == clockLoc[1] + clockOffsety:
-		print('Calibration Successful: Clock Buttons are already correct!')
+		print('Calibration UNSUCCESSFUL: Clock button not found.')
+	elif blueEdgex == clockLoc[0] + clockOffsetx \
+			and blueEdgey == clockLoc[1] + clockOffsety:
+		print('Calibration Successful: Clock button is already correct!')
 	else:
 		print('OLD =', blueEdgex, blueEdgey)
 
@@ -128,7 +143,7 @@ def calibrate2():
 		blueEdgey = clockLoc[1] + clockOffsety
 
 		print('NEW =', blueEdgex, blueEdgey)
-		print('Calibration Successful!')
+		print('Calibration Successful! Clock button is calibrated!')
 
 	waitClockInput(3)
 	pag.typewrite('\t\t\t\t\t\n', interval=0.005)
@@ -148,7 +163,8 @@ def calibrate3():
 
 	if buttonLoc == None:
 		print('Calibration UNSUCCESSFUL: tab button not found.')
-	elif tabButtonx == buttonLoc[0] + aktUmumOffsetx and tabButtony == buttonLoc[1] + aktUmumOffsety:
+	elif tabButtonx == buttonLoc[0] + aktUmumOffsetx \
+			and tabButtony == buttonLoc[1] + aktUmumOffsety:
 		print('Calibration Successful: Tab button is already correct!')
 	else:
 		print('OLD =', tabButtonx, tabButtony)
@@ -157,7 +173,7 @@ def calibrate3():
 		tabButtony = buttonLoc[1] + aktUmumOffsety
 
 		print('NEW =', tabButtonx, tabButtony)
-		print('Calibration Successful!')
+		print('Calibration Successful! Tab button is calibrated!')
 
 	pag.scroll(20)
 	tsleep(scrollDelay)
@@ -177,7 +193,8 @@ def calibrate4():
 
 	if buttonLoc == None:
 		print('Calibration UNSUCCESSFUL: tambah laporan  button not found.')
-	elif button2x == buttonLoc[0] + tamLapOffsetx and button2y == buttonLoc[1] + tamLapOffsety:
+	elif button2x == buttonLoc[0] + tamLapOffsetx \
+			and button2y == buttonLoc[1] + tamLapOffsety:
 		print('Calibration Successful: Tambah Laporan button is already correct!')
 	else:
 		print('OLD =', button2x, button2y)
@@ -186,7 +203,7 @@ def calibrate4():
 		button2y = buttonLoc[1] + tamLapOffsety
 
 		print('NEW =', button2x, button2y)
-		print('Calibration Successful!')
+		print('Calibration Successful! Tambah Laporan button is calibrated!')
 
 	pag.click(tabButtonx - 130, tabButtony + 240)
 	checkPixel(tabButtonx - 130, tabButtony + 240, 220)
@@ -276,7 +293,7 @@ def submit():
 	return '\t\t\n'
 
 def checkPixel(x, y, color):
-	'''Check the pixel color of x and y.'''
+	'''Check the pixel color of x and y until the red color is different.'''
 	if type(color) in (tuple, list):
 		while pag.screenshot(region=(x, y, 1, 1)).getpixel((0, 0))[0] in color:
 			tsleep(waitDelay)
@@ -287,12 +304,12 @@ def checkPixel(x, y, color):
 		print("WRONG color")
 
 def checkNotPixel(x, y, color):
-	'''Check the pixel color of x and y.'''
+	'''Check the pixel color of x and y until the red color is the same.'''
 	while pag.screenshot(region=(x, y, 1, 1)).getpixel((0, 0))[0] != color:
 		tsleep(waitDelay)
 
-def isiSenam():
-	'''Input 'senam' activity in 'Aktifitas Umum'.'''
+def isiUmum(search, timeStart, timeEnd, info):
+	'''Input an activity in 'Aktivitas Umum.'''
 	# click 'Aktivitas Umum'
 	button1Check()
 	pag.scroll(scrollValue // 2)
@@ -307,7 +324,7 @@ def isiSenam():
 	# check until the data can be inputed
 	checkNotPixel(button2x - 280, button2y + 50, 246)
 	pag.click(button2x - 280, button2y + 50)
-	pag.typewrite("mengikuti senam\n\t07:30\t08:30\t\tSenam pagi karyawan RSUD Jagakarsa"
+	pag.typewrite(search + "\n\t" + timeStart + "\t" + timeEnd + "\t\t" + info
 			+ submit())
 
 	# check until can go back to 'Aktivitas Utama'
@@ -318,16 +335,18 @@ def isiSenam():
 				break
 			tsleep(waitDelay)
 
-	# go back to 'Aktivitas Utama'
+	# set the location of 'Aktivitas Utama' button
 	tombolUtama = (tabButtonx - 130,)
 	if testVar:
 		tombolUtama += (tabButtony + 240,)
 	else:
 		tombolUtama += (tabButtony + 195,)
-	pag.click(tombolUtama[0], tombolUtama[1])
-	checkNotPixel(tombolUtama[0], tombolUtama[1], 220)
 
-	print('Finished Senam')
+	# go back to 'Aktivitas Utama'
+	if pag.screenshot(region=(tombolUtama[0], tombolUtama[1], 1, 1)).getpixel((0, 0))[0] == 220:
+		pag.click(tombolUtama[0], tombolUtama[1])
+
+	checkPixel(tombolUtama[0], tombolUtama[1], 220)
 
 def tindak(tindakan, tOpt):
 	'''Inputs 'Melakukan tindakan / terapi pengobatan'
@@ -414,43 +433,54 @@ def kocam(pasien, tOpt):
 	print('Finished Konsultasi and Catatan Medik')
 	pag.scroll(20)
 
+def formatClock(clock):
+	clock = clock.replace(":", "")
+	return clock[0:2] + ":" + clock[2:4]
+
+# Saved 'isiUmum' preset
+def isiSenam():
+	'''Input 'senam' activity in 'Aktifitas Umum'.'''
+	isiUmum("mengikuti senam", "07:00", "08:00", "Senam pagi karyawan RSUD Jagakarsa")
+
+def isiApel():
+	'''Input 'Menjadi petugas Apel' activity in 'Aktifitas Umum'.'''
+	isiUmum("apel -", "07:30", "08:00", "Mengikuti apel pagi RSUD Jagakarsa")
+
 # Saved 'tindakan' preset
 def meTindak():
 	'''Normal 'tindakan'.'''
 	tOpt = ['07:30', '09:00', '10:30', '12:00']
+	if j_masuk:
+		tOpt[0] = formatClock(j_masuk)
 	tindak(j_tindak, tOpt)
 def seTindak():
 	'''Senam 'tindakan'.'''
-	tOpt = ['08:30', '10:00', '11:00', '12:00']
-	tindak(j_tindak, tOpt)
+	tindak(j_tindak, ['08:00', '09:00', '10:30', '12:00'])
 def diTindak():
 	'''Only a few 'tindakan'.'''
-	tOpt = ['07:30', '09:00', '10:30']
-	tindak(j_tindak, tOpt)
+	tindak(j_tindak, ['07:30', '09:00', '10:30'])
+def apTindak():
+	'''When there's a ceremony.'''
+	tindak(j_tindak, ['08:00', '09:00', '10:30', '12:00'])
 
 # Saved 'rujukan' preset
 def meRujuk():
 	'''Normal 'rujukan'.'''
-	tOpt = ['12:00', '12:30']
-	rujuk(j_rujuk, tOpt)
+	rujuk(j_rujuk, ['12:00', '12:30'])
 def diRujuk():
 	'''Only a few 'rujukan'.'''
-	tOpt = ['10:30', '11:00']
-	rujuk(j_rujuk, tOpt)
+	rujuk(j_rujuk, ['10:30', '11:00'])
 
 # Saved 'konsultasi dan catatan medik' preset
 def meKocam():
 	'''Normal 'konsultasi dan catatan medik'.'''
-	tOpt = ['12:30', '13:30', '14:00']
-	kocam(j_pasien, tOpt)
+	kocam(j_pasien, ['12:30', '13:30', '14:00'])
 def saKocam():
 	'''Saturday 'konsultasi dan catatan medik'.'''
-	tOpt = ['12:00', '12:30', '13:00']
-	kocam(j_pasien, tOpt)
+	kocam(j_pasien, ['12:00', '12:30', '13:00'])
 def diKocam():
 	'''Only a few 'konsultasi dan catatan medik'.'''
-	tOpt = ['11:00', '11:30', '12:00']
-	kocam(j_pasien, tOpt)
+	kocam(j_pasien, ['11:00', '11:30', '12:00'])
 
 # Daftar fungsi-fungsi yang bisa dijalankan
 def normal():
@@ -460,7 +490,7 @@ def normal():
 	meKocam()
 def senam():
 	'''Untuk hari rabu saat ada senam.'''
-	isiSenam()
+	# isiSenam()
 	seTindak()
 	meRujuk()
 	meKocam()
@@ -471,6 +501,11 @@ def sabtu():
 def dikit():
 	'''Untuk hari biasa saat pasien sedikit.'''
 	meTindak()
+	meRujuk()
+	meKocam()
+def senin():
+	# isiApel()
+	apTindak()
 	meRujuk()
 	meKocam()
 
