@@ -9,8 +9,6 @@ if [ $? -eq 0 ]; then
 else
     if [ -f "/home/dimas/Programs/anaconda3/etc/profile.d/conda.sh" ]; then
         . "/home/dimas/Programs/anaconda3/etc/profile.d/conda.sh"
-##        CONDA_CHANGEPS1=false
-        conda activate base
     else
         \export PATH="/home/dimas/Programs/anaconda3/bin:$PATH"
     fi
