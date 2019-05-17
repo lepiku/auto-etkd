@@ -151,21 +151,21 @@ class Frame(tk.Frame):
         opts.title('auto-etkd Options')
 
         preset =   [[('Normal tindakan', etkd.meTindak),
-            ('Senam tindakan', etkd.seTindak),
-            ('Dikit tindakan', etkd.diTindak)],
-            [('Normal rujukan', etkd.meRujuk),
-                ('Dikit rujukan', etkd.diRujuk),
-                ('Isi senam', etkd.isiSenam)],
-            [('Normal kocam', etkd.meKocam),
-                ('Sabtu kocam', etkd.saKocam),
-                ('Dikit Kocam', etkd.diKocam)]]
+                    ('Senam tindakan', etkd.seTindak),
+                    ('Dikit tindakan', etkd.diTindak)],
+                    [('Normal rujukan', etkd.meRujuk),
+                    ('Dikit rujukan', etkd.diRujuk),
+                    ('Isi senam', etkd.isiSenam)],
+                    [('Normal kocam', etkd.meKocam),
+                    ('Sabtu kocam', etkd.saKocam),
+                    ('Dikit Kocam', etkd.diKocam)]]
 
-            for x in range(len(preset)):
-                for y in range(len(preset[x])):
-                    button = tk.Button(opts, text=preset[x][y][0],
-                            command=lambda c=preset[x][y][1]:
-                            self.wrapper(self.getOptions, c))
-                    button.grid(row=y, column=x, sticky='we')
+        for x in range(len(preset)):
+            for y in range(len(preset[x])):
+                button = tk.Button(opts, text=preset[x][y][0],
+                        command=lambda c=preset[x][y][1]:
+                        self.wrapper(self.getOptions, c))
+                button.grid(row=y, column=x, sticky='we')
 
         l_pause = tk.Label(opts, text="realPause/testPause")
         self.e_realPause = tk.Entry(opts, width=10)
@@ -220,8 +220,8 @@ class Frame(tk.Frame):
             print('!!ABORTED!!')
             self.l_progress.configure(text='!!ABORTED!!', bg='yellow')
         # if no error exist
-    else:
-        self.l_progress.configure(text='', bg='green')
+        else:
+            self.l_progress.configure(text='', bg='green')
             print('\tTime = {} seconds\n'.format(ttime() - timer))
             self.delete()
 

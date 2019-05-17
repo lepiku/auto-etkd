@@ -51,14 +51,15 @@ blueEdgex = 1375
 blueEdgey = 683
 
 # i3 settings
-button1x = 1825
-button1y = [242, 390, 538, 686, 833]
-blueEdgex = 1362
-blueEdgey = 705
-tabButtonx = 1387
-tabButtony = 596
-button2x = 1783
-button2y = 942
+ 
+button1x   = 1806 # 1825
+button1y   = [261, 409, 557, 705, 852] # [242, 390, 538, 686, 833]
+blueEdgex  = 1343 # 1362
+blueEdgey  = 697 # 705
+tabButtonx = 1368 # 1387
+tabButtony = 615 # 596
+button2x   = 1790 # 1783
+button2y   = 934 # 942
 
 # failsafe and settings
 pag.PAUSE = 0
@@ -271,7 +272,7 @@ def waitClockInput(button):
 
 def autoChangeNum():
     '''Automatically press down arrow key until it reached the maximum.'''
-        for i in range(5):
+    for i in range(5):
         pag.press('down')
     pag.press('tab')
 
