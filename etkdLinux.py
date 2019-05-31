@@ -51,7 +51,6 @@ blueEdgex = 1375
 blueEdgey = 683
 
 # i3 settings
- 
 button1x   = 1806 # 1825
 button1y   = [261, 409, 557, 705, 852] # [242, 390, 538, 686, 833]
 blueEdgex  = 1343 # 1362
@@ -60,6 +59,12 @@ tabButtonx = 1368 # 1387
 tabButtony = 615 # 596
 button2x   = 1790 # 1783
 button2y   = 934 # 942
+""" After the first one:
+button1x   = 1806
+button1y   = [269, 417, 565, 713, 860]
+tabButtonx = 1368
+tabButtony = 623
+"""
 
 # failsafe and settings
 pag.PAUSE = 0
@@ -251,8 +256,9 @@ def button1Check():
             break
 
         # calibrate after 10 ScrollPrep
-        if counter == 10:
+        if counter == 5:
             calibrate1()
+            calibrate3()
 
         counter += 1
         scrollPrep()
