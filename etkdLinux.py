@@ -40,8 +40,8 @@ tambahLaporanPath = '/home/dimas/Dropbox/Python/auto-etkd/images/' + \
 windowLocation = (1315, 13, 115, 5)
 lapOffsetx = -9
 lapOffsety = 10
-clockOffsetx = 7
-clockOffsety = 129
+clockOffsetx = 90
+clockOffsety = -11
 aktUmumOffsetx = 27
 aktUmumOffsety = 6
 tamLapOffsetx = 26
@@ -52,11 +52,11 @@ blueEdgey = 683
 
 # i3 settings
 button1x   = 1806 # 1825
-button1y   = [261, 409, 557, 705, 852] # [242, 390, 538, 686, 833]
+button1y   = [293, 441, 589, 737, 884] # [242, 390, 538, 686, 833]
 blueEdgex  = 1343 # 1362
 blueEdgey  = 697 # 705
 tabButtonx = 1368 # 1387
-tabButtony = 615 # 596
+tabButtony = 647 # 596
 button2x   = 1790 # 1783
 button2y   = 934 # 942
 """ After the first one:
@@ -337,7 +337,7 @@ def isiUmum(search, timeStart, timeEnd, info):
     # check until can go back to 'Aktivitas Utama'
     checkPixel(tabButtonx - 60, tabButtony + 440, (26, 28))
     if not testVar: # check the first green icon on the right
-        for x in range(0, 10):
+        for _ in range(0, 10):
             if pag.screenshot(region=(button2x, button2y + 41, 1, 1)).getpixel((0, 0))[0] == 26:
                 break
             tsleep(waitDelay)
