@@ -26,16 +26,13 @@ button2x = 1800
 button2y = 920
 
 # calibration settings
-windowNamePath = '/home/dimas/Dropbox/Python/auto-etkd/images/' + \
-        'ekinerjaWindow.png'
-laporkanButtonPath = '/home/dimas/Dropbox/Python/auto-etkd/images/' + \
-        'laporkanButton.png'
-clockButtonPath = '/home/dimas/Dropbox/Python/auto-etkd/images/' + \
-        'clockButton.png'
-aktivitasUmumPath = '/home/dimas/Dropbox/Python/auto-etkd/images/' + \
-        'aktivitasUmum.png'
-tambahLaporanPath = '/home/dimas/Dropbox/Python/auto-etkd/images/' + \
-        'tambahLaporan.png'
+image_prefix = '/home/dimas/Dropbox/Python/auto-etkd/images/'
+windowNamePath = image_prefix + 'ekinerjaWindow.png'
+laporkanButtonPath = image_prefix + 'laporkanButton.png'
+clockButtonPath = image_prefix + 'clockButton.png'
+aktivitasUmumPath = image_prefix + 'aktivitasUmum.png'
+aktivitasUtamaPath = image_prefix + 'aktivitasUtama.png'
+tambahLaporanPath = image_prefix + 'tambahLaporan.png'
 
 windowLocation = (1315, 13, 115, 5)
 lapOffsetx = -9
@@ -51,20 +48,14 @@ blueEdgex = 1375
 blueEdgey = 683
 
 # i3 settings
-button1x   = 1806 # 1825
-button1y   = [293, 441, 589, 737, 884] # [242, 390, 538, 686, 833]
-blueEdgex  = 1343 # 1362
-blueEdgey  = 697 # 705
-tabButtonx = 1368 # 1387
-tabButtony = 647 # 596
-button2x   = 1790 # 1783
-button2y   = 934 # 942
-""" After the first one:
 button1x   = 1806
-button1y   = [269, 417, 565, 713, 860]
+button1y   = [293, 441, 589, 737, 884] # [293, 441, 589, 737, 884]
+blueEdgex  = 1343
+blueEdgey  = 697
 tabButtonx = 1368
-tabButtony = 623
-"""
+tabButtony = 647 # 639
+button2x   = 1790
+button2y   = 934
 
 # failsafe and settings
 pag.PAUSE = 0
@@ -73,6 +64,12 @@ j_masuk = ""
 j_tindak = 0
 j_rujuk = 0
 j_pasien = 0
+
+def tempYChange():
+    global button1y, tabButtony
+
+    button1y = [293, 441, 589, 737, 884]
+    tabButtony = 639
 
 def checkKinerja():
     '''Check if the window name is 'eKinerja DKI Jakarta - Mozilla Firefox'
@@ -255,8 +252,11 @@ def button1Check():
                 and bshot.getpixel((0, 1))[0] == 245):
             break
 
-        # calibrate after 10 ScrollPrep
+        # calibrate after 5 ScrollPrep
         if counter == 5:
+            tempYChange()
+
+        if counter == 10:
             calibrate1()
             calibrate3()
 
@@ -497,10 +497,10 @@ def normal():
     meKocam()
 def senam():
     '''Untuk hari rabu saat ada senam.'''
-    # isiSenam()
     seTindak()
     meRujuk()
     meKocam()
+    # isiSenam()
 def sabtu():
     ''' Untuk hari sabtu yang tanpa rujukan.'''
     meTindak()
